@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AgriPrice Pro - Agricultural Price Prediction Platform
 
-## Getting Started
+A modern Next.js application designed to help farmers make informed decisions about crop pricing for rice, durian, and mango. The platform features interactive price charts, AI-powered predictions, and comprehensive market analytics.
 
-First, run the development server:
+## 🌟 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Modern, Responsive UI**: Built with Tailwind CSS for a beautiful user experience across all devices
+- **Interactive Price Charts**: Real-time visualization using Recharts with historical and prediction data
+- **Price Prediction Models**: AI-powered forecasting with confidence intervals
+- **Market Analytics**: Comprehensive statistics including volume, market cap, and trend analysis
+- **Multi-Crop Support**: Rice, Durian, and Mango price tracking and predictions
+- **Farmer-Focused UX**: Intuitive design with actionable insights and recommendations
+
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Charts**: Recharts
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **Date Handling**: date-fns
+- **Utilities**: clsx for conditional styling
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── layout.tsx      # Root layout with metadata
+│   └── page.tsx        # Home page with Dashboard
+├── components/          # Reusable React components
+│   ├── Dashboard.tsx   # Main dashboard component
+│   ├── PriceChart.tsx  # Interactive price chart
+│   ├── MarketStatsCard.tsx  # Market statistics display
+│   └── TimeRangeSelector.tsx # Time range filter
+├── data/               # Mock data and utilities
+│   └── mockData.ts     # Generated mock data for crops
+├── lib/                # Utility functions
+│   └── utils.ts        # Helper functions and formatters
+└── types/              # TypeScript type definitions
+    └── index.ts        # Project type definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Features Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Dashboard
+- **Crop Selection**: Easy switching between Rice, Durian, and Mango
+- **Real-time Statistics**: Current prices, 24h/7d/30d changes, volume, and market cap
+- **Interactive Charts**: Historical price data with multiple time range options
+- **Price Predictions**: Future price forecasting with confidence intervals
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Price Analysis
+- **Historical Data**: Up to 1 year of historical price data
+- **Time Range Filters**: 7D, 1M, 3M, 6M, 1Y, and All time views
+- **Trend Analysis**: Visual indicators for price movements and market sentiment
+- **Volume Tracking**: Market volume data for supply-demand insights
 
-## Learn More
+### Farmer Tools
+- **Market Insights**: AI-generated insights about price trends and market conditions
+- **Selling Recommendations**: Optimal timing suggestions based on predictions
+- **Market Strategy**: Strategic advice for inventory management
 
-To learn more about Next.js, take a look at the following resources:
+## 🎨 Design Principles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Mobile-First**: Responsive design optimized for mobile devices
+- **Clean Interface**: Modern, intuitive UI suitable for farmers
+- **Data Visualization**: Clear, easy-to-understand charts and graphs
+- **Accessibility**: High contrast colors and readable typography
+- **Performance**: Fast loading times with optimized components
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📊 Mock Data
 
-## Deploy on Vercel
+The application uses sophisticated mock data generation that includes:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Realistic Price Fluctuations**: Based on market volatility patterns
+- **Seasonal Trends**: Crop-specific seasonal price variations
+- **Volume Correlation**: Trading volume that correlates with price movements
+- **Prediction Algorithms**: Confidence-based forecasting models
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd mockup-special-project
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## 🎯 Usage
+
+1. **Select Crop**: Choose between Rice, Durian, or Mango from the crop selection cards
+2. **View Statistics**: Monitor current price, changes, volume, and market cap
+3. **Analyze Trends**: Use the interactive chart to analyze historical price data
+4. **Switch Time Ranges**: Filter data by 7D, 1M, 3M, 6M, 1Y, or All time
+5. **View Predictions**: Toggle to prediction mode to see future price forecasts
+6. **Read Insights**: Review market insights and farmer recommendations
+
+## 🔮 Future Enhancements
+
+- **Real API Integration**: Connect to live agricultural price APIs
+- **User Accounts**: Personal dashboards and portfolio tracking
+- **Mobile App**: React Native version for mobile users
+- **Push Notifications**: Price alerts and market updates
+- **Multiple Markets**: Support for different geographical markets
+- **Advanced Analytics**: Machine learning-powered insights
+
+## 📱 Responsive Design
+
+The platform is fully responsive and optimized for:
+- **Desktop**: Full-featured dashboard experience
+- **Tablet**: Optimized layout for medium screens
+- **Mobile**: Touch-friendly interface with essential features
+
+## 🌐 Browser Support
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## 📄 License
+
+This project is created for demonstration purposes. All price data is simulated and should not be used for actual trading decisions.
+
+## 🤝 Contributing
+
+This is a mockup project created for demonstration. For real-world implementation, consider:
+- Integrating with actual agricultural price APIs
+- Adding user authentication and personalization
+- Implementing real-time data updates
+- Adding more sophisticated prediction models

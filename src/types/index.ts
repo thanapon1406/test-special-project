@@ -1,0 +1,36 @@
+export interface PriceData {
+  date: string;
+  price: number;
+  volume?: number;
+}
+
+export interface CropInfo {
+  id: string;
+  name: string;
+  icon: string;
+  unit: string;
+  color: string;
+  description: string;
+}
+
+export interface PredictionData {
+  date: string;
+  historical: number | null;
+  current: number | null;
+  predicted: number | null;
+  confidence: number;
+}
+
+export interface MarketStats {
+  currentPrice: number;
+  change24h: number;
+  change7d: number;
+  change30d: number;
+  volume: number;
+  marketCap: number;
+  aiAccuracy?: number;
+}
+
+export type TimeRange = '7d' | '1m' | '3m' | '6m' | '1y' | 'all';
+
+export type CropType = 'rice' | 'durian' | 'mango';
