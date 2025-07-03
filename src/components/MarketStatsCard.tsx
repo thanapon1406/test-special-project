@@ -96,6 +96,51 @@ export default function MarketStatsCard({ stats, cropName, cropIcon }: MarketSta
           </div>
         </div>
       </div>
+
+      {/* Supply-Demand Information */}
+      {stats.currentSupply && (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Market Supply Analysis</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Current Supply</span>
+                <span className="text-sm font-medium text-gray-900">
+                  {stats.currentSupply.toLocaleString()} kg
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Supply Status</span>
+                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${
+                  stats.supplyStatus === 'high' ? 'bg-red-100 text-red-800' :
+                  stats.supplyStatus === 'low' ? 'bg-green-100 text-green-800' :
+                  'bg-blue-100 text-blue-800'
+                }`}>
+                  {stats.supplyStatus?.toUpperCase()}
+                </span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Price Outlook</span>
+                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${
+                  stats.priceOutlook === 'bearish' ? 'bg-red-100 text-red-800' :
+                  stats.priceOutlook === 'bullish' ? 'bg-green-100 text-green-800' :
+                  'bg-blue-100 text-blue-800'
+                }`}>
+                  {stats.priceOutlook?.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">AI Impact</span>
+                <span className="text-sm font-medium text-gray-900">
+                  Supply-driven
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -18,7 +18,11 @@ interface CustomTooltipProps {
     name: string;
     value: number;
     dataKey: string;
-    payload: { confidence?: number };
+    payload: { 
+      confidence?: number; 
+      estimatedSupply?: number;
+      supplyImpact?: number;
+    };
   }>;
   label?: string;
 }
@@ -27,9 +31,10 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length && label) {
     const date = new Date(label);
     const isValidDate = !isNaN(date.getTime());
+    const dataPoint = payload[0]?.payload;
     
     return (
-      <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
+      <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg max-w-xs">
         <p className="text-sm text-gray-600 mb-2">
           {isValidDate ? format(date, 'MMM dd, yyyy') : label}
         </p>
@@ -43,6 +48,21 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
             )}
           </p>
         ))}
+        
+        {/* Supply information for prediction data */}
+        {dataPoint?.estimatedSupply && (
+          <div className="mt-2 pt-2 border-t border-gray-100">
+            <p className="text-xs text-gray-500">Supply Analysis:</p>
+            <p className="text-xs text-gray-600">
+              Est. Supply: {dataPoint.estimatedSupply.toLocaleString()} kg
+            </p>
+            {dataPoint.supplyImpact && (
+              <p className="text-xs text-gray-600">
+                Price Impact: {dataPoint.supplyImpact > 0 ? '+' : ''}{(dataPoint.supplyImpact * 100).toFixed(1)}%
+              </p>
+            )}
+          </div>
+        )}
       </div>
     );
   }

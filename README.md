@@ -1,15 +1,32 @@
-# AgriPrice Pro - Agricultural Price Prediction Platform
+# AgriPrice Pro - AI-Powered Agricultural Price Prediction Platform
 
-A modern Next.js application designed to help farmers make informed decisions about crop pricing for rice, durian, and mango. The platform features interactive price charts, AI-powered predictions, and comprehensive market analytics.
+A modern Next.js application designed to help farmers make informed decisions about crop pricing for rice, durian, and mango. The platform features interactive price charts, AI-powered predictions with supply-demand analysis, and comprehensive farmer assistance for challenging market conditions.
 
 ## 🌟 Key Features
 
+### Core Functionality
 - **Modern, Responsive UI**: Built with Tailwind CSS for a beautiful user experience across all devices
-- **Interactive Price Charts**: Real-time visualization using Recharts with historical and prediction data
-- **Price Prediction Models**: AI-powered forecasting with confidence intervals
-- **Market Analytics**: Comprehensive statistics including volume, market cap, and trend analysis
-- **Multi-Crop Support**: Rice, Durian, and Mango price tracking and predictions
-- **Farmer-Focused UX**: Intuitive design with actionable insights and recommendations
+- **Interactive Price Charts**: Real-time visualization using Recharts with historical and prediction data merged in one view
+- **AI-Powered Price Predictions**: Advanced forecasting models with confidence intervals and accuracy tracking
+- **Supply-Demand Analysis**: Integration of inventory levels and market supply factors in price predictions
+- **Multi-Crop Support**: Rice, Durian, and Mango price tracking and predictions with crop-specific factors
+
+### Farmer Support System
+- **Early Warning Alerts**: 3-month advance notice when prices are predicted to drop significantly
+- **Farmer Assistance Center**: Actionable recommendations for low-price situations including:
+  - Alternative marketing channels
+  - Value-added processing options
+  - Storage and timing strategies
+  - Cooperative formation guidance
+  - Government support program information
+- **Market Intelligence**: Real-time supply status, price outlook, and AI impact analysis
+- **Emotional Support**: Encouraging messages and practical hope during challenging market periods
+
+### Advanced Analytics
+- **Supply Status Indicators**: Real-time classification of market supply (Low/Normal/High)
+- **Price Outlook Predictions**: Bullish/Neutral/Bearish forecasts based on supply-demand dynamics
+- **AI Accuracy Tracking**: Transparent display of prediction accuracy percentages
+- **Interactive Tooltips**: Detailed supply information and price impact analysis on chart hover
 
 ## 🚀 Tech Stack
 

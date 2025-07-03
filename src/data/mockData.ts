@@ -1,4 +1,4 @@
-import { CropInfo, PriceData, PredictionData, MarketStats } from '@/types';
+import { CropInfo, PriceData, PredictionData, MarketStats, FarmerAssistance } from '@/types';
 import { subDays, format } from 'date-fns';
 
 // Crop information
@@ -62,27 +62,47 @@ export const historicalData: Record<string, PriceData[]> = {
   mango: generatePriceData(85, 365, 0.12, 3003)
 };
 
-// Generate prediction data with overlapping timeline
-const generatePredictionData = (historical: PriceData[], daysHistorical: number = 30, daysAhead: number = 30, seed: number = 5555): PredictionData[] => {
+// Generate prediction data with overlapping timeline and supply factors
+const generatePredictionData = (historical: PriceData[], daysHistorical: number = 30, daysAhead: number = 30, seed: number = 5555, cropType: string = 'rice'): PredictionData[] => {
   const data: PredictionData[] = [];
   
   // Get the specified number of days of historical data
   const recentHistorical = historical.slice(-daysHistorical);
   const basePrice = recentHistorical[recentHistorical.length - 1].price;
   
+  // Supply factors based on crop type (simulating market conditions)
+  const supplyFactors = {
+    rice: { baseSupply: 15000, seasonality: 0.2, volatility: 0.15 },
+    durian: { baseSupply: 8000, seasonality: 0.4, volatility: 0.25 },
+    mango: { baseSupply: 12000, seasonality: 0.3, volatility: 0.20 }
+  };
+  
+  const cropSupply = supplyFactors[cropType as keyof typeof supplyFactors] || supplyFactors.rice;
+  
   // Add historical data with both current and predicted values for overlap
   recentHistorical.forEach((item, index) => {
-    // Generate "what AI would have predicted" for this historical point
+    // Generate supply data for historical period
     const daysSinceStart = index - recentHistorical.length + 1;
+    const seasonalSupply = cropSupply.baseSupply * (1 + Math.sin(daysSinceStart / 30) * cropSupply.seasonality);
+    const supplyNoise = (seededRandom(seed + index + 100) - 0.5) * cropSupply.volatility;
+    const estimatedSupply = seasonalSupply * (1 + supplyNoise);
+    
+    // Supply impact on price (more supply = lower price)
+    const supplyImpact = -((estimatedSupply - cropSupply.baseSupply) / cropSupply.baseSupply) * 0.5;
+    
+    // Generate "what AI would have predicted" for this historical point
     const trendFactor = (seededRandom(seed + index) - 0.4) * 0.02;
-    const aiPrediction = basePrice * (1 + (trendFactor * Math.abs(daysSinceStart)));
+    const supplyAdjustedPrice = basePrice * (1 + (trendFactor * Math.abs(daysSinceStart)) + supplyImpact);
     
     data.push({
       date: item.date,
       historical: item.price,
       current: item.price,
-      predicted: Number(aiPrediction.toFixed(2)), // Show what AI predicted
-      confidence: 0.9 // High confidence for recent predictions
+      predicted: Number(supplyAdjustedPrice.toFixed(2)),
+      confidence: 0.9,
+      estimatedSupply: Number(estimatedSupply.toFixed(0)),
+      supplyImpact: Number(supplyImpact.toFixed(3)),
+      demandTrend: 1 + (seededRandom(seed + index + 200) - 0.5) * 0.1
     });
   });
   
@@ -92,10 +112,20 @@ const generatePredictionData = (historical: PriceData[], daysHistorical: number 
     futureDate.setDate(futureDate.getDate() + i - 1);
     const date = format(futureDate, 'yyyy-MM-dd');
     
-    // Create realistic future predictions
+    // Predict future supply (seasonal patterns + random factors)
+    const seasonalSupply = cropSupply.baseSupply * (1 + Math.sin(i / 30) * cropSupply.seasonality);
+    const supplyTrend = 1 + (seededRandom(seed + i + 300) - 0.3) * 0.2; // Slight oversupply trend
+    const futureSupply = seasonalSupply * supplyTrend;
+    
+    // Calculate supply impact on future prices
+    const supplyImpact = -((futureSupply - cropSupply.baseSupply) / cropSupply.baseSupply) * 0.6;
+    
+    // Create realistic future predictions with supply factors
     const trendFactor = (seededRandom(seed + i + 1000) - 0.4) * 0.03;
     const volatilityFactor = (seededRandom(seed + i + 2000) - 0.5) * 0.05;
-    const predicted = basePrice * (1 + (trendFactor * i) + volatilityFactor);
+    const demandFactor = 1 + (seededRandom(seed + i + 400) - 0.5) * 0.15;
+    
+    const predicted = basePrice * (1 + (trendFactor * i) + volatilityFactor + supplyImpact) * demandFactor;
     const confidence = Math.max(0.5, 1 - (i / daysAhead) * 0.5);
     
     data.push({
@@ -103,7 +133,10 @@ const generatePredictionData = (historical: PriceData[], daysHistorical: number 
       historical: null,
       current: null,
       predicted: Number(predicted.toFixed(2)),
-      confidence: Number(confidence.toFixed(2))
+      confidence: Number(confidence.toFixed(2)),
+      estimatedSupply: Number(futureSupply.toFixed(0)),
+      supplyImpact: Number(supplyImpact.toFixed(3)),
+      demandTrend: Number(demandFactor.toFixed(3))
     });
   }
   
@@ -113,19 +146,19 @@ const generatePredictionData = (historical: PriceData[], daysHistorical: number 
 // Prediction data for different time ranges
 export const predictionData: Record<string, Record<string, PredictionData[]>> = {
   rice: {
-    '7d': generatePredictionData(historicalData.rice, 7, 7, 4004),
-    '1m': generatePredictionData(historicalData.rice, 30, 30, 4004),
-    '3m': generatePredictionData(historicalData.rice, 90, 90, 4004),
+    '7d': generatePredictionData(historicalData.rice, 7, 7, 4004, 'rice'),
+    '1m': generatePredictionData(historicalData.rice, 30, 30, 4004, 'rice'),
+    '3m': generatePredictionData(historicalData.rice, 90, 90, 4004, 'rice'),
   },
   durian: {
-    '7d': generatePredictionData(historicalData.durian, 7, 7, 5005),
-    '1m': generatePredictionData(historicalData.durian, 30, 30, 5005),
-    '3m': generatePredictionData(historicalData.durian, 90, 90, 5005),
+    '7d': generatePredictionData(historicalData.durian, 7, 7, 5005, 'durian'),
+    '1m': generatePredictionData(historicalData.durian, 30, 30, 5005, 'durian'),
+    '3m': generatePredictionData(historicalData.durian, 90, 90, 5005, 'durian'),
   },
   mango: {
-    '7d': generatePredictionData(historicalData.mango, 7, 7, 6006),
-    '1m': generatePredictionData(historicalData.mango, 30, 30, 6006),
-    '3m': generatePredictionData(historicalData.mango, 90, 90, 6006),
+    '7d': generatePredictionData(historicalData.mango, 7, 7, 6006, 'mango'),
+    '1m': generatePredictionData(historicalData.mango, 30, 30, 6006, 'mango'),
+    '3m': generatePredictionData(historicalData.mango, 90, 90, 6006, 'mango'),
   }
 };
 
@@ -150,8 +183,7 @@ export const calculatePredictionAccuracy = (crop: string): number => {
   return Math.round((totalAccuracy / historicalData.length) * 100);
 };
 
-// Market statistics
-// Market statistics
+// Market statistics with supply information
 export const marketStats: Record<string, MarketStats> = {
   rice: {
     currentPrice: historicalData.rice[historicalData.rice.length - 1].price,
@@ -160,7 +192,10 @@ export const marketStats: Record<string, MarketStats> = {
     change30d: 5.8,
     volume: 15420,
     marketCap: 2340000,
-    aiAccuracy: 87
+    aiAccuracy: 87,
+    currentSupply: 18500, // High supply causing price pressure
+    supplyStatus: 'high',
+    priceOutlook: 'bearish'
   },
   durian: {
     currentPrice: historicalData.durian[historicalData.durian.length - 1].price,
@@ -169,7 +204,10 @@ export const marketStats: Record<string, MarketStats> = {
     change30d: 12.5,
     volume: 8950,
     marketCap: 1850000,
-    aiAccuracy: 82
+    aiAccuracy: 82,
+    currentSupply: 7200, // Normal supply
+    supplyStatus: 'normal',
+    priceOutlook: 'neutral'
   },
   mango: {
     currentPrice: historicalData.mango[historicalData.mango.length - 1].price,
@@ -178,7 +216,10 @@ export const marketStats: Record<string, MarketStats> = {
     change30d: -3.2,
     volume: 12300,
     marketCap: 1920000,
-    aiAccuracy: 91
+    aiAccuracy: 91,
+    currentSupply: 10800, // Low supply relative to demand
+    supplyStatus: 'low',
+    priceOutlook: 'bullish'
   }
 };
 
@@ -230,4 +271,97 @@ export const getDataByTimeRange = (data: PriceData[], range: string): PriceData[
   
   const startDateStr = format(startDate, 'yyyy-MM-dd');
   return data.filter(d => d.date >= startDateStr);
+};
+
+// Farmer assistance system - analyzes price trends and provides recommendations
+export const getFarmerAssistance = (crop: string, timeRange: string = '3m'): FarmerAssistance[] => {
+  const stats = marketStats[crop];
+  const predictions = getPredictionDataByTimeRange(crop, timeRange);
+  const assistance: FarmerAssistance[] = [];
+  
+  if (!stats || !predictions.length) return assistance;
+  
+  // Calculate average predicted price for next 3 months
+  const futurePredictions = predictions.filter(p => p.predicted !== null && p.historical === null);
+  const avgFuturePrice = futurePredictions.reduce((sum, p) => sum + (p.predicted || 0), 0) / futurePredictions.length;
+  const currentPrice = stats.currentPrice;
+  const priceChange = ((avgFuturePrice - currentPrice) / currentPrice) * 100;
+  
+  // Check for oversupply situation
+  if (stats.supplyStatus === 'high' && priceChange < -10) {
+    assistance.push({
+      alertType: 'warning',
+      title: '⚠️ Oversupply Alert: Low Prices Expected',
+      message: `Our AI predicts ${crop} prices will drop by ${Math.abs(priceChange).toFixed(1)}% over the next 3 months due to high supply in the market.`,
+      recommendations: [
+        '🏪 Consider alternative marketing channels (direct sales, farmers markets)',
+        '🔄 Explore value-added processing options (dried, canned, preserved)',
+        '📦 Investigate storage options to sell when prices recover',
+        '🤝 Form cooperatives with other farmers to negotiate better bulk prices',
+        '🌱 Consider diversifying crops for next season',
+        '💰 Look into government agricultural support programs'
+      ],
+      timeframe: 'Next 3 months',
+      severity: 'high'
+    });
+  }
+  
+  // Check for supply shortage (good for farmers)
+  if (stats.supplyStatus === 'low' && priceChange > 5) {
+    assistance.push({
+      alertType: 'success',
+      title: '📈 Market Opportunity: Strong Prices Ahead',
+      message: `Great news! ${crop} supply is low and our AI predicts prices will increase by ${priceChange.toFixed(1)}% over the next 3 months.`,
+      recommendations: [
+        '⏰ Hold your inventory if possible - prices are trending upward',
+        '🎯 Plan to sell during peak demand periods',
+        '📈 Consider premium pricing for high-quality produce',
+        '🌟 Market directly to restaurants and premium buyers',
+        '📱 Use digital platforms to reach wider customer base'
+      ],
+      timeframe: 'Next 3 months',
+      severity: 'low'
+    });
+  }
+  
+  // General supply-demand insights
+  const supplyImpact = futurePredictions.reduce((sum, p) => sum + (p.supplyImpact || 0), 0) / futurePredictions.length;
+  
+  if (Math.abs(supplyImpact) > 0.1) {
+    assistance.push({
+      alertType: 'info',
+      title: '📊 Supply-Demand Analysis',
+      message: `Market supply levels are ${supplyImpact < 0 ? 'above' : 'below'} normal, creating ${supplyImpact < 0 ? 'downward' : 'upward'} pressure on ${crop} prices.`,
+      recommendations: [
+        `📊 Current market supply: ${stats.currentSupply?.toLocaleString() || 'N/A'} kg`,
+        `📈 Supply status: ${stats.supplyStatus?.toUpperCase()}`,
+        `🔮 Price outlook: ${stats.priceOutlook?.toUpperCase()}`,
+        '📱 Use our AI predictions to time your sales optimally',
+        '🎯 Focus on quality to command premium prices'
+      ],
+      timeframe: 'Ongoing',
+      severity: 'medium'
+    });
+  }
+  
+  return assistance;
+};
+
+// Get current market conditions summary
+export const getMarketConditions = (crop: string) => {
+  const stats = marketStats[crop];
+  const predictions = getPredictionDataByTimeRange(crop, '3m');
+  
+  if (!stats || !predictions.length) return null;
+  
+  const futurePredictions = predictions.filter(p => p.predicted !== null && p.historical === null);
+  const avgSupplyImpact = futurePredictions.reduce((sum, p) => sum + (p.supplyImpact || 0), 0) / futurePredictions.length;
+  
+  return {
+    supplyLevel: stats.currentSupply,
+    supplyStatus: stats.supplyStatus,
+    supplyImpact: avgSupplyImpact,
+    priceOutlook: stats.priceOutlook,
+    avgFuturePrice: futurePredictions.reduce((sum, p) => sum + (p.predicted || 0), 0) / futurePredictions.length
+  };
 };
