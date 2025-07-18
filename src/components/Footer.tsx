@@ -10,7 +10,7 @@ export default function Footer({ cropData, getPredictionInsight }: FooterProps) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Market Insights */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Market Insights</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Suggestion</h3>
                 <div className="space-y-4">
                     <div className="p-4 bg-blue-50 rounded-lg">
                         <div className="flex items-start space-x-3">
@@ -47,7 +47,7 @@ export default function Footer({ cropData, getPredictionInsight }: FooterProps) 
 
             {/* Recommendations */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Farmer Recommendations</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Farmer</h3>
                 <div className="space-y-4">
                     <div className="p-4 bg-yellow-50 rounded-lg">
                         <h4 className="font-medium text-yellow-900 mb-2">
