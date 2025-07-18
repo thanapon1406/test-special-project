@@ -37,16 +37,6 @@ export default function Dashboard() {
     );
   }
 
-  // Deterministic prediction insights based on crop
-  const getPredictionInsight = (cropName: string) => {
-    const insights: Record<string, { trend: string; confidence: number }> = {
-      Mangosteen: { trend: 'increase', confidence: 78 },
-      Durian: { trend: 'stabilize', confidence: 72 },
-      Longan: { trend: 'increase', confidence: 85 },
-    };
-    return insights[cropName] || insights['Mangosteen'];
-  };
-
   const cropData = crops[selectedCrop];
   // Always show merged historical + prediction data
   const chartData = getPredictionDataByTimeRange(selectedCrop, timeRange);
@@ -92,8 +82,8 @@ export default function Dashboard() {
                 key={key}
                 onClick={() => setSelectedCrop(key as CropType)}
                 className={`p-4 rounded-xl border-2 transition-all duration-200 ${selectedCrop === key
-                    ? 'border-green-500 bg-green-50 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                  ? 'border-green-500 bg-green-50 shadow-md'
+                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                   }`}
               >
                 <div className="flex items-center space-x-3">
@@ -150,7 +140,6 @@ export default function Dashboard() {
 
         <Footer
           cropData={cropData}
-          getPredictionInsight={getPredictionInsight}
         />
       </main>
     </div>
