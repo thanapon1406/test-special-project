@@ -15,7 +15,12 @@ export default function Dashboard() {
   const [selectedCrop, setSelectedCrop] = useState<CropType>('mangosteen');
   const [timeRange, setTimeRange] = useState<TimeRange>('1m');
   const [isClient, setIsClient] = useState(false);
-  const date = new Date().toLocaleDateString('en-US', {
+  const [language, setLanguage] = useState<'en' | 'th'>('en');
+
+  // Translation function
+  const t = (en: string, th: string) => language === 'en' ? en : th;
+
+  const date = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'th-TH', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -55,15 +60,39 @@ export default function Dashboard() {
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Farm Link</h1>
                 <p className="text-sm text-gray-600">
-                  AI-powered platform that helps farmers sell their products by
-                  predicting market prices
+                  {t(
+                    'AI-powered platform that helps farmers sell their products by predicting market prices',
+                    'แพลตฟอร์ม AI ที่ช่วยเกษตรกรขายผลผลิตโดยการทำนายราคาตลาด'
+                  )}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                Current Market Data – {date}
+                {t('Current Market Data', 'ข้อมูลตลาดปัจจุบัน')} – {date}
+              </div>
+
+              {/* Language Toggle Button */}
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'en'
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-600 hover:text-blue-500'
+                    }`}
+                >
+                  ENG
+                </button>
+                <button
+                  onClick={() => setLanguage('th')}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'th'
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-600 hover:text-blue-500'
+                    }`}
+                >
+                  TH
+                </button>
               </div>
             </div>
           </div>
@@ -74,7 +103,7 @@ export default function Dashboard() {
         {/* Crop Selection */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Select Crop
+            {t('Select Crop', 'เลือกพืชผล')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {Object.entries(crops).map(([key, crop]) => (
@@ -113,8 +142,10 @@ export default function Dashboard() {
             <div className="flex items-center space-x-3">
               <Calendar className="w-5 h-5 text-gray-400" />
               <h2 className="text-lg font-semibold text-gray-900">
-                AI Price Analysis & Prediction ({timeRange.toUpperCase()}{' '}
-                Historical + Forecast)
+                {t(
+                  `AI Price Analysis & Prediction (${timeRange.toUpperCase()} Historical + Forecast)`,
+                  `การวิเคราะห์และทำนายราคา AI (ข้อมูลย้อนหลัง ${timeRange.toUpperCase()} + การพยากรณ์)`
+                )}
               </h2>
             </div>
 
@@ -140,6 +171,7 @@ export default function Dashboard() {
 
         <Footer
           cropData={cropData}
+          language={language}
         />
       </main>
     </div>

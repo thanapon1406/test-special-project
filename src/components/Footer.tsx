@@ -2,6 +2,7 @@ import { Calendar, TrendingUp } from "lucide-react";
 
 interface FooterProps {
     cropData: { name: string };
+    language?: 'en' | 'th';
 }
 
 interface ProcessingOption {
@@ -148,12 +149,16 @@ const getProcessingOptions = (cropName: string): ProcessingOption[] => {
     return processingData[cropName] || [];
 };
 
-export default function Footer({ cropData }: FooterProps) {
+export default function Footer({ cropData, language = 'en' }: FooterProps) {
+    // Translation function
+    const t = (en: string, th: string) => language === 'en' ? en : th;
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Market Insights */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Processing Options</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {t('Product Processing Options', 'ตัวเลือกการแปรรูปผลิตภัณฑ์')}
+                </h3>
                 <div className="space-y-4">
                     <div className="p-4 bg-blue-50 rounded-lg">
                         <div className="flex items-start space-x-3">
@@ -162,7 +167,7 @@ export default function Footer({ cropData }: FooterProps) {
                             </div>
                             <div className="w-full">
                                 <h4 className="font-medium text-blue-900 mb-3">
-                                    {cropData.name} Processing Products
+                                    {t(`${cropData.name} Processing Products`, `ผลิตภัณฑ์แปรรูป ${cropData.name}`)}
                                 </h4>
                                 {getProcessingOptions(cropData.name).map((category, index) => (
                                     <div key={index} className="mb-3">
@@ -188,10 +193,14 @@ export default function Footer({ cropData }: FooterProps) {
                                 <Calendar className="w-4 h-4 text-green-600" />
                             </div>
                             <div>
-                                <h4 className="font-medium text-green-900">Market Trends</h4>
+                                <h4 className="font-medium text-green-900">
+                                    {t('Market Trends', 'แนวโน้มตลาด')}
+                                </h4>
                                 <p className="text-sm text-green-700 mt-1">
-                                    The processed {cropData.name.toLowerCase()} market is showing growth trends,
-                                    particularly in health and wellness product segments.
+                                    {t(
+                                        `The processed ${cropData.name.toLowerCase()} market is showing growth trends, particularly in health and wellness product segments.`,
+                                        `ตลาด${cropData.name.toLowerCase()}แปรรูปกำลังแสดงแนวโน้มการเติบโต โดยเฉพาะในส่วนผลิตภัณฑ์สุขภาพและความงาม`
+                                    )}
                                 </p>
                             </div>
                         </div>
@@ -201,7 +210,9 @@ export default function Footer({ cropData }: FooterProps) {
 
             {/* Farm Directory */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Partner Farms</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {t('Partner Farms', 'ฟาร์มพันธมิตร')}
+                </h3>
                 <div className="space-y-4">
                     {getFarmInfo(cropData.name).map((farm, index) => (
                         <div key={index} className="p-4 bg-yellow-50 rounded-lg">
@@ -210,10 +221,10 @@ export default function Footer({ cropData }: FooterProps) {
                             </h4>
                             <div className="space-y-1">
                                 <p className="text-sm text-yellow-700">
-                                    📍 Location: {farm.location}
+                                    📍 {t('Location', 'ที่ตั้ง')}: {farm.location}
                                 </p>
                                 <p className="text-sm text-yellow-700">
-                                    🌟 Specialty: {farm.specialty}
+                                    🌟 {t('Specialty', 'ความเชี่ยวชาญ')}: {farm.specialty}
                                 </p>
                             </div>
                         </div>
@@ -221,11 +232,13 @@ export default function Footer({ cropData }: FooterProps) {
 
                     <div className="p-4 bg-purple-50 rounded-lg">
                         <h4 className="font-medium text-purple-900 mb-2">
-                            Farm Partnership Program
+                            {t('Farm Partnership Program', 'โปรแกรมพันธมิตรฟาร์ม')}
                         </h4>
                         <p className="text-sm text-purple-700">
-                            Join our network of premium {cropData.name.toLowerCase()} farms.
-                            We provide market access, price prediction tools, and direct buyer connections.
+                            {t(
+                                `Join our network of premium ${cropData.name.toLowerCase()} farms. We provide market access, price prediction tools, and direct buyer connections.`,
+                                `เข้าร่วมเครือข่ายฟาร์ม${cropData.name.toLowerCase()}คุณภาพสูงของเรา เราให้บริการการเข้าถึงตลาด เครื่องมือทำนายราคา และการเชื่อมต่อผู้ซื้อโดยตรง`
+                            )}
                         </p>
                     </div>
                 </div>
