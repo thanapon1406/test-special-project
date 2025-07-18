@@ -7,6 +7,7 @@ import PriceChart from '@/components/PriceChart';
 import MarketStatsCard from '@/components/MarketStatsCard';
 import TimeRangeSelector from '@/components/TimeRangeSelector';
 import FarmerAlerts from '@/components/FarmerAlerts';
+import FruitIcon from '@/components/FruitIcon';
 import { TrendingUp, Calendar } from 'lucide-react';
 
 export default function Dashboard() {
@@ -90,7 +91,7 @@ export default function Dashboard() {
                   }`}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{crop.icon}</span>
+                  <FruitIcon iconName={crop.icon} size={32} />
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900">{crop.name}</h3>
                     <p className="text-sm text-gray-600">{crop.description}</p>

@@ -12,7 +12,7 @@ export const crops: Record<string, CropInfo> = {
   mangosteen: {
     id: 'mangosteen',
     name: 'Mangosteen',
-    icon: '',
+    icon: 'mangosteen-svgrepo-com.svg',
     unit: 'per kg',
     color: '#10b981',
     description: 'Queen of Fruits',
@@ -20,7 +20,7 @@ export const crops: Record<string, CropInfo> = {
   durian: {
     id: 'durian',
     name: 'Durian',
-    icon: '',
+    icon: 'durian-svgrepo-com.svg',
     unit: 'per kg',
     color: '#f59e0b',
     description: 'King of fruits',
@@ -28,10 +28,10 @@ export const crops: Record<string, CropInfo> = {
   longan: {
     id: 'longan',
     name: 'Longan',
-    icon: '',
+    icon: 'longan-svgrepo-com.svg',
     unit: 'per kg',
     color: '#ef4444',
-    description: 'Dragon’s Eye Fruit',
+    description: 'Dragon Eye Fruit',
   },
 };
 
