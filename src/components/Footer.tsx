@@ -2,10 +2,11 @@ import { Calendar, TrendingUp } from "lucide-react";
 
 interface FooterProps {
     cropData: { name: string };
+    language?: 'en' | 'th';
 }
 
 interface ProcessingOption {
-    name: string;
+    name: string[];
     companies?: string[];
 }
 
@@ -79,67 +80,68 @@ const getProcessingOptions = (cropName: string): ProcessingOption[] => {
     const processingData: Record<string, ProcessingOption[]> = {
         'Mangosteen': [
             {
-                name: 'Canned Mangosteen',
+                name: ['Canned Mangosteen', 'มังคุดกระป๋อง'],
                 companies: ['CP Foods', 'CP ALL', 'CP Intertrade']
             },
             {
-                name: 'Mangosteen Peel Balm',
+
+                name: ['Mangosteen Peel Extract', 'สารสกัดเปลือกมังคุด'],
                 companies: ['CP Cosmetics', 'CP Pharma']
             },
             {
-                name: 'Mangosteen Soap',
+                name: ['Mangosteen Soap', 'สบู่มังคุด'],
                 companies: ['CP Consumer Products', 'CP Beauty']
             },
             {
-                name: 'Mangosteen Juice Concentrate',
+                name: ['Mangosteen Juice Concentrate', 'น้ำมังคุดเข้มข้น'],
                 companies: ['CP Fresh Mart', 'CP Beverage']
             },
             {
-                name: 'Mangosteen Skincare Cream',
+                name: ['Mangosteen Skincare Cream', 'ครีมบำรุงผิวมังคุด'],
                 companies: ['CP Beauty', 'CP Wellness']
             }
         ],
         'Durian': [
             {
-                name: 'Frozen Durian',
+                name: ['Frozen Durian', 'ทุเรียนแช่แข็ง'],
                 companies: ['CP Foods', 'CP Fresh', 'CP Export']
             },
             {
-                name: 'Dried Durian',
+                name: ['Dried Durian', 'ทุเรียนอบแห้ง'],
                 companies: ['CP Snacks', 'CP Premium']
             },
             {
-                name: 'Durian Ice Cream',
+                name: ['Durian Ice Cream', 'ไอศกรีมทุเรียน'],
                 companies: ['CP Dairy', 'CP Frozen']
             },
             {
-                name: 'Durian Desserts',
+                name: ['Durian Desserts', 'ขนมรสทุเรียน'],
                 companies: ['CP Bakery', 'CP Confectionery']
             },
             {
-                name: 'Durian Ready-to-Drink',
+                name: ['Durian Ready-to-Drink', 'เครื่องดื่มทุเรียนแบบพร้อมดื่ม'],
                 companies: ['CP Beverage', 'CP Fresh Mart']
             }
         ],
         'Longan': [
             {
-                name: 'Canned Longan',
+                name: ['Canned Longan', 'ลำไยกระป๋อง'],
                 companies: ['CP Foods', 'CP Canning', 'CP Export']
             },
             {
-                name: 'Dried Longan',
+                name: ['Dried Longan', 'ลำไยอบแห้ง'],
                 companies: ['CP Premium', 'CP Traditional']
             },
             {
-                name: 'Longan Juice Concentrate',
+                name: ['Longan Juice Concentrate', 'น้ำลำไยเข้มข้น'],
                 companies: ['CP Beverage', 'CP Fresh']
             },
             {
-                name: 'Longan Tea',
+                name: ['Longan Tea', 'ชาลำไย'],
                 companies: ['CP Tea', 'CP Herbal']
             },
             {
-                name: 'Longan Health Products',
+                name: ['Longan Health Products', 'ผลิตภัณฑ์สุขภาพจากลำไย'],
                 companies: ['CP Pharma', 'CP Wellness']
             }
         ]
@@ -148,12 +150,26 @@ const getProcessingOptions = (cropName: string): ProcessingOption[] => {
     return processingData[cropName] || [];
 };
 
-export default function Footer({ cropData }: FooterProps) {
+export default function Footer({ cropData, language = 'en' }: FooterProps) {
+    // Translation function
+    const t = (en: string, th: string) => language === 'en' ? en : th;
+
+    // Crop name translation
+    const getCropNameTranslation = (name: string) => {
+        const translations: Record<string, string> = {
+            'Mangosteen': 'มังคุด',
+            'Durian': 'ทุเรียน',
+            'Longan': 'ลำไย'
+        };
+        return language === 'th' ? translations[name] || name : name;
+    };
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Market Insights */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Processing Options</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {t('Product Processing Options', 'ตัวเลือกการแปรรูปผลิตภัณฑ์')}
+                </h3>
                 <div className="space-y-4">
                     <div className="p-4 bg-blue-50 rounded-lg">
                         <div className="flex items-start space-x-3">
@@ -162,11 +178,11 @@ export default function Footer({ cropData }: FooterProps) {
                             </div>
                             <div className="w-full">
                                 <h4 className="font-medium text-blue-900 mb-3">
-                                    {cropData.name} Processing Products
+                                    {t(`${getCropNameTranslation(cropData.name)} Processing Products`, `ผลิตภัณฑ์แปรรูป${getCropNameTranslation(cropData.name)}`)}
                                 </h4>
                                 {getProcessingOptions(cropData.name).map((category, index) => (
                                     <div key={index} className="mb-3">
-                                        <div className="font-medium text-blue-800 mb-2">• {category.name}</div>
+                                        <div className="font-medium text-blue-800 mb-2">• {t(category?.name[0], category?.name[1])}</div>
                                         {category.companies && category.companies.length > 0 && (
                                             <div className="ml-4 space-y-1">
                                                 {category.companies.map((company, compIndex) => (
@@ -188,10 +204,14 @@ export default function Footer({ cropData }: FooterProps) {
                                 <Calendar className="w-4 h-4 text-green-600" />
                             </div>
                             <div>
-                                <h4 className="font-medium text-green-900">Market Trends</h4>
+                                <h4 className="font-medium text-green-900">
+                                    {t('Market Trends', 'แนวโน้มตลาด')}
+                                </h4>
                                 <p className="text-sm text-green-700 mt-1">
-                                    The processed {cropData.name.toLowerCase()} market is showing growth trends,
-                                    particularly in health and wellness product segments.
+                                    {t(
+                                        `The processed ${getCropNameTranslation(cropData.name).toLowerCase()} market is showing growth trends, particularly in health and wellness product segments.`,
+                                        `ตลาด${getCropNameTranslation(cropData.name).toLowerCase()}แปรรูปกำลังแสดงแนวโน้มการเติบโต โดยเฉพาะในส่วนผลิตภัณฑ์สุขภาพและความงาม`
+                                    )}
                                 </p>
                             </div>
                         </div>
@@ -201,7 +221,9 @@ export default function Footer({ cropData }: FooterProps) {
 
             {/* Farm Directory */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Partner Farms</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {t('Partner Farms', 'ฟาร์มพันธมิตร')}
+                </h3>
                 <div className="space-y-4">
                     {getFarmInfo(cropData.name).map((farm, index) => (
                         <div key={index} className="p-4 bg-yellow-50 rounded-lg">
@@ -210,10 +232,10 @@ export default function Footer({ cropData }: FooterProps) {
                             </h4>
                             <div className="space-y-1">
                                 <p className="text-sm text-yellow-700">
-                                    📍 Location: {farm.location}
+                                    📍 {t('Location', 'ที่ตั้ง')}: {farm.location}
                                 </p>
                                 <p className="text-sm text-yellow-700">
-                                    🌟 Specialty: {farm.specialty}
+                                    🌟 {t('Specialty', 'ความเชี่ยวชาญ')}: {farm.specialty}
                                 </p>
                             </div>
                         </div>
@@ -221,11 +243,13 @@ export default function Footer({ cropData }: FooterProps) {
 
                     <div className="p-4 bg-purple-50 rounded-lg">
                         <h4 className="font-medium text-purple-900 mb-2">
-                            Farm Partnership Program
+                            {t('Farm Partnership Program', 'โปรแกรมพันธมิตรฟาร์ม')}
                         </h4>
                         <p className="text-sm text-purple-700">
-                            Join our network of premium {cropData.name.toLowerCase()} farms.
-                            We provide market access, price prediction tools, and direct buyer connections.
+                            {t(
+                                `Join our network of premium ${getCropNameTranslation(cropData.name).toLowerCase()} farms. We provide market access, price prediction tools, and direct buyer connections.`,
+                                `เข้าร่วมเครือข่ายฟาร์ม${getCropNameTranslation(cropData.name).toLowerCase()}คุณภาพสูงของเรา เราให้บริการการเข้าถึงตลาด เครื่องมือทำนายราคา และการเชื่อมต่อผู้ซื้อโดยตรง`
+                            )}
                         </p>
                     </div>
                 </div>
