@@ -23,6 +23,8 @@ export interface PredictionData {
   estimatedSupply?: number; // Amount of product in market (kg)
   supplyImpact?: number; // How supply affects price (-1 to 1)
   demandTrend?: number; // Demand trend factor
+  average?: number;
+  volume?: number;
 }
 
 export interface MarketStats {

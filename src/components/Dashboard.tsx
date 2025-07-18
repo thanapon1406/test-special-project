@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { CropType, TimeRange } from '@/types';
-import { crops, marketStats, getPredictionDataByTimeRange, getFarmerAssistance } from '@/data/mockData';
+import {
+  crops,
+  marketStats,
+  getPredictionDataByTimeRange,
+  getFarmerAssistance,
+} from '@/data/mockData';
 import PriceChart from '@/components/PriceChart';
 import MarketStatsCard from '@/components/MarketStatsCard';
 import TimeRangeSelector from '@/components/TimeRangeSelector';
@@ -39,9 +44,9 @@ export default function Dashboard() {
   // Deterministic prediction insights based on crop
   const getPredictionInsight = (cropName: string) => {
     const insights: Record<string, { trend: string; confidence: number }> = {
-      'Mangosteen': { trend: 'increase', confidence: 78 },
-      'Durian': { trend: 'stabilize', confidence: 72 },
-      'Longan': { trend: 'increase', confidence: 85 }
+      Mangosteen: { trend: 'increase', confidence: 78 },
+      Durian: { trend: 'stabilize', confidence: 72 },
+      Longan: { trend: 'increase', confidence: 85 },
     };
     return insights[cropName] || insights['Mangosteen'];
   };
@@ -63,7 +68,10 @@ export default function Dashboard() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Farm Link</h1>
-                <p className="text-sm text-gray-600">AI-powered platform that helps farmers sell their products by predicting market prices</p>
+                <p className="text-sm text-gray-600">
+                  AI-powered platform that helps farmers sell their products by
+                  predicting market prices
+                </p>
               </div>
             </div>
 
@@ -79,16 +87,19 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Crop Selection */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Select Crop</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Select Crop
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {Object.entries(crops).map(([key, crop]) => (
               <button
                 key={key}
                 onClick={() => setSelectedCrop(key as CropType)}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 ${selectedCrop === key
-                  ? 'border-green-500 bg-green-50 shadow-md'
-                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                  selectedCrop === key
+                    ? 'border-green-500 bg-green-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                }`}
               >
                 <div className="flex items-center space-x-3">
                   <FruitIcon iconName={crop.icon} size={32} />
@@ -117,7 +128,8 @@ export default function Dashboard() {
             <div className="flex items-center space-x-3">
               <Calendar className="w-5 h-5 text-gray-400" />
               <h2 className="text-lg font-semibold text-gray-900">
-                AI Price Analysis & Prediction ({timeRange.toUpperCase()} Historical + Forecast)
+                AI Price Analysis & Prediction ({timeRange.toUpperCase()}{' '}
+                Historical + Forecast)
               </h2>
             </div>
 
@@ -130,11 +142,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <PriceChart
-            data={chartData}
-            color={cropData.color}
-            height={400}
-          />
+          <PriceChart data={chartData} color={cropData.color} height={400} />
         </div>
 
         {/* Farmer Assistance Section */}
@@ -149,7 +157,9 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Market Insights */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Market Insights</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Market Insights
+            </h3>
             <div className="space-y-4">
               <div className="p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-start space-x-3">
@@ -161,7 +171,11 @@ export default function Dashboard() {
                       AI Prediction Trend
                     </h4>
                     <p className="text-sm text-blue-700 mt-1">
-                      AI model predicts {cropData.name.toLowerCase()} prices will {getPredictionInsight(cropData.name).trend} over the next 30 days with {getPredictionInsight(cropData.name).confidence}% confidence.
+                      AI model predicts {cropData.name.toLowerCase()} prices
+                      will {getPredictionInsight(cropData.name).trend} over the
+                      next 30 days with{' '}
+                      {getPredictionInsight(cropData.name).confidence}%
+                      confidence.
                     </p>
                   </div>
                 </div>
@@ -173,9 +187,12 @@ export default function Dashboard() {
                     <Calendar className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-green-900">Seasonal Outlook</h4>
+                    <h4 className="font-medium text-green-900">
+                      Seasonal Outlook
+                    </h4>
                     <p className="text-sm text-green-700 mt-1">
-                      Current season conditions are favorable for {cropData.name.toLowerCase()}
+                      Current season conditions are favorable for{' '}
+                      {cropData.name.toLowerCase()}
                       with stable supply and growing demand.
                     </p>
                   </div>
@@ -186,14 +203,20 @@ export default function Dashboard() {
 
           {/* Recommendations */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Farmer Recommendations</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Farmer Recommendations
+            </h3>
             <div className="space-y-4">
               <div className="p-4 bg-yellow-50 rounded-lg">
                 <h4 className="font-medium text-yellow-900 mb-2">
                   AI Selling Recommendation
                 </h4>
                 <p className="text-sm text-yellow-700">
-                  Based on 30-day forecast, optimal selling window is in {getPredictionInsight(cropData.name).trend === 'increase' ? '3-4 weeks' : '1-2 weeks'} when prices reach predicted maximum.
+                  Based on 30-day forecast, optimal selling window is in{' '}
+                  {getPredictionInsight(cropData.name).trend === 'increase'
+                    ? '3-4 weeks'
+                    : '1-2 weeks'}{' '}
+                  when prices reach predicted maximum.
                 </p>
               </div>
 
@@ -202,7 +225,11 @@ export default function Dashboard() {
                   AI Inventory Strategy
                 </h4>
                 <p className="text-sm text-purple-700">
-                  AI recommends {getPredictionInsight(cropData.name).trend === 'increase' ? 'holding inventory for price appreciation' : 'gradual selling to avoid market saturation'} based on forecasted demand patterns.
+                  AI recommends{' '}
+                  {getPredictionInsight(cropData.name).trend === 'increase'
+                    ? 'holding inventory for price appreciation'
+                    : 'gradual selling to avoid market saturation'}{' '}
+                  based on forecasted demand patterns.
                 </p>
               </div>
             </div>

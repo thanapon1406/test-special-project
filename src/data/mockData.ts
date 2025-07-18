@@ -5,7 +5,7 @@ import {
   MarketStats,
   FarmerAssistance,
 } from '@/types';
-import { subDays, format } from 'date-fns';
+import { subDays, format, addDays } from 'date-fns';
 
 // Crop information
 export const crops: Record<string, CropInfo> = {
@@ -52,7 +52,8 @@ const generatePriceData = (
   let currentPrice = basePrice;
 
   for (let i = days; i >= 0; i--) {
-    const date = format(subDays(new Date('2024-12-31'), i), 'yyyy-MM-dd');
+    //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
+    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
     const change =
       (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
     currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
@@ -87,6 +88,8 @@ const generatePredictionData = (
   // Get the specified number of days of historical data
   const recentHistorical = historical.slice(-daysHistorical);
   const basePrice = recentHistorical[recentHistorical.length - 1].price;
+
+  const averageCost = basePrice - 50;
 
   // Supply factors based on crop type (simulating market conditions)
   const supplyFactors = {
@@ -129,12 +132,16 @@ const generatePredictionData = (
       estimatedSupply: Number(estimatedSupply.toFixed(0)),
       supplyImpact: Number(supplyImpact.toFixed(3)),
       demandTrend: 1 + (seededRandom(seed + index + 200) - 0.5) * 0.1,
+      //ออมสินเพิ่มค่าของ ต้นทุน และ volume
+      average: averageCost,
+      volume: Number(estimatedSupply.toFixed(0)),
     });
   });
 
   // Add future predictions starting from the day after last historical
   for (let i = 1; i <= daysAhead; i++) {
-    const futureDate = new Date('2025-01-01');
+    //ออมสินเปลี่ยน เป็นค่าของวันพรุี่งนี้
+    const futureDate = addDays(new Date(), 1);
     futureDate.setDate(futureDate.getDate() + i - 1);
     const date = format(futureDate, 'yyyy-MM-dd');
 
@@ -168,6 +175,8 @@ const generatePredictionData = (
       estimatedSupply: Number(futureSupply.toFixed(0)),
       supplyImpact: Number(supplyImpact.toFixed(3)),
       demandTrend: Number(demandFactor.toFixed(3)),
+      //ออมสินเพิ่่ม ค่าของ ต้นทุน
+      average: averageCost,
     });
   }
 
@@ -284,6 +293,7 @@ export const getPredictionDataByTimeRange = (
   range: string,
 ): PredictionData[] => {
   const cropPredictions = predictionData[crop];
+
   if (!cropPredictions) return [];
 
   // Map time ranges to available prediction data
