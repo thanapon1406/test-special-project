@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 interface ProcessingOption {
-    name: string;
+    name: string[];
     companies?: string[];
 }
 
@@ -80,67 +80,68 @@ const getProcessingOptions = (cropName: string): ProcessingOption[] => {
     const processingData: Record<string, ProcessingOption[]> = {
         'Mangosteen': [
             {
-                name: 'Canned Mangosteen',
+                name: ['Canned Mangosteen', 'มังคุดกระป๋อง'],
                 companies: ['CP Foods', 'CP ALL', 'CP Intertrade']
             },
             {
-                name: 'Mangosteen Peel Balm',
+
+                name: ['Mangosteen Peel Extract', 'สารสกัดเปลือกมังคุด'],
                 companies: ['CP Cosmetics', 'CP Pharma']
             },
             {
-                name: 'Mangosteen Soap',
+                name: ['Mangosteen Soap', 'สบู่มังคุด'],
                 companies: ['CP Consumer Products', 'CP Beauty']
             },
             {
-                name: 'Mangosteen Juice Concentrate',
+                name: ['Mangosteen Juice Concentrate', 'น้ำมังคุดเข้มข้น'],
                 companies: ['CP Fresh Mart', 'CP Beverage']
             },
             {
-                name: 'Mangosteen Skincare Cream',
+                name: ['Mangosteen Skincare Cream', 'ครีมบำรุงผิวมังคุด'],
                 companies: ['CP Beauty', 'CP Wellness']
             }
         ],
         'Durian': [
             {
-                name: 'Frozen Durian',
+                name: ['Frozen Durian', 'ทุเรียนแช่แข็ง'],
                 companies: ['CP Foods', 'CP Fresh', 'CP Export']
             },
             {
-                name: 'Dried Durian',
+                name: ['Dried Durian', 'ทุเรียนอบแห้ง'],
                 companies: ['CP Snacks', 'CP Premium']
             },
             {
-                name: 'Durian Ice Cream',
+                name: ['Durian Ice Cream', 'ไอศกรีมทุเรียน'],
                 companies: ['CP Dairy', 'CP Frozen']
             },
             {
-                name: 'Durian Desserts',
+                name: ['Durian Desserts', 'ขนมรสทุเรียน'],
                 companies: ['CP Bakery', 'CP Confectionery']
             },
             {
-                name: 'Durian Ready-to-Drink',
+                name: ['Durian Ready-to-Drink', 'เครื่องดื่มทุเรียนแบบพร้อมดื่ม'],
                 companies: ['CP Beverage', 'CP Fresh Mart']
             }
         ],
         'Longan': [
             {
-                name: 'Canned Longan',
+                name: ['Canned Longan', 'ลำไยกระป๋อง'],
                 companies: ['CP Foods', 'CP Canning', 'CP Export']
             },
             {
-                name: 'Dried Longan',
+                name: ['Dried Longan', 'ลำไยอบแห้ง'],
                 companies: ['CP Premium', 'CP Traditional']
             },
             {
-                name: 'Longan Juice Concentrate',
+                name: ['Longan Juice Concentrate', 'น้ำลำไยเข้มข้น'],
                 companies: ['CP Beverage', 'CP Fresh']
             },
             {
-                name: 'Longan Tea',
+                name: ['Longan Tea', 'ชาลำไย'],
                 companies: ['CP Tea', 'CP Herbal']
             },
             {
-                name: 'Longan Health Products',
+                name: ['Longan Health Products', 'ผลิตภัณฑ์สุขภาพจากลำไย'],
                 companies: ['CP Pharma', 'CP Wellness']
             }
         ]
@@ -171,7 +172,7 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                                 </h4>
                                 {getProcessingOptions(cropData.name).map((category, index) => (
                                     <div key={index} className="mb-3">
-                                        <div className="font-medium text-blue-800 mb-2">• {category.name}</div>
+                                        <div className="font-medium text-blue-800 mb-2">• {t(category?.name[0], category?.name[1])}</div>
                                         {category.companies && category.companies.length > 0 && (
                                             <div className="ml-4 space-y-1">
                                                 {category.companies.map((company, compIndex) => (
