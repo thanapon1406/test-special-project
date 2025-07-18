@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   LineChart,
@@ -11,15 +11,16 @@ import {
   Legend,
   Bar,
   ReferenceArea,
-} from "recharts";
-import { PriceData, PredictionData } from "@/types";
-import { formatCurrency } from "@/lib/utils";
-import { format, isAfter, isBefore, parseISO } from "date-fns";
+} from 'recharts';
+import { PriceData, PredictionData } from '@/types';
+import { formatCurrency } from '@/lib/utils';
+import { format, isAfter, isBefore, parseISO } from 'date-fns';
 
 interface PriceChartProps {
   data: PriceData[] | PredictionData[];
   color?: string;
   height?: number;
+  selectedCrop: string;
 }
 
 interface CustomTooltipProps {
@@ -47,7 +48,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     return (
       <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg max-w-xs">
         <p className="text-sm text-gray-600 mb-2">
-          {isValidDate ? format(date, "MMM dd, yyyy") : label}
+          {isValidDate ? format(date, 'MMM dd, yyyy') : label}
         </p>
         {payload
           .filter((entry) => entry.value !== null)
@@ -58,7 +59,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
               style={{ color: entry.color }}
             >
               {entry.name}: {formatCurrency(entry.value)}
-              {entry.dataKey === "predicted" && entry.payload.confidence && (
+              {entry.dataKey === 'predicted' && entry.payload.confidence && (
                 <span className="text-xs text-gray-500 ml-2">
                   ({Math.round(entry.payload.confidence * 100)}% confidence)
                 </span>
@@ -75,7 +76,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
             </p>
             {dataPoint.supplyImpact && (
               <p className="text-xs text-gray-600">
-                Price Impact: {dataPoint.supplyImpact > 0 ? "+" : ""}
+                Price Impact: {dataPoint.supplyImpact > 0 ? '+' : ''}
                 {(dataPoint.supplyImpact * 100).toFixed(1)}%
               </p>
             )}
@@ -89,35 +90,36 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 
 export default function PriceChart({
   data,
-  color = "#10b981",
+  color = '#10b981',
   height = 300,
+  selectedCrop,
 }: PriceChartProps) {
-  const highlightRange = {
-    from: "2025-05-01",
-    to: "2025-08-31",
-  };
+  const highlightRange = [
+    {
+      key: 'Mangosteen',
+      from: '2025-05-15', // เริ่มกลาง พ.ค.
+      to: '2025-08-15', // จบเร็วกว่าเล็กน้อย
+    },
+    {
+      key: 'Durian',
+      from: '2025-04-20',
+      to: '2025-07-31',
+    },
+    {
+      key: 'Longan',
+      from: '2025-07-01',
+      to: '2025-09-30',
+    },
+  ];
 
   // สร้างช่วงของกราฟตอนนี้ (จาก data ที่กราฟแสดงอยู่)
   const chartStart = parseISO(data[0].date);
   const chartEnd = parseISO(data[data.length - 1].date);
 
-  // สร้างช่วงที่เราต้องการ highlight
-  const highlightStart = parseISO(highlightRange.from);
-  const highlightEnd = parseISO(highlightRange.to);
+  const cropRange = highlightRange.find((range) => range.key === selectedCrop);
 
-  // ตรวจสอบว่ากราฟมีช่วงที่ overlap กับ highlightRange
-  const isOverlap =
-    isBefore(highlightStart, chartEnd) && isAfter(highlightEnd, chartStart);
-
-  // ตรวจสอบว่า highlightRange ครอบคลุม chart ทั้งหมด
-  const isFullyCovered =
-    isBefore(highlightStart, chartStart) && isAfter(highlightEnd, chartEnd);
-
-  // ถ้าครอบคลุมทั้งหมด ให้ highlight ทั้งกราฟ
-  const refAreaX1 = isFullyCovered ? data[0].date : highlightRange.from;
-  const refAreaX2 = isFullyCovered
-    ? data[data.length - 1].date
-    : highlightRange.to;
+  const highlightStart = cropRange ? parseISO(cropRange.from) : null;
+  const highlightEnd = cropRange ? parseISO(cropRange.to) : null;
 
   const formatXAxisLabel = (dateStr: string) => {
     try {
@@ -126,7 +128,7 @@ export default function PriceChart({
       if (isNaN(date.getTime())) {
         return dateStr;
       }
-      return format(date, "MMM dd");
+      return format(date, 'MMM dd');
     } catch {
       return dateStr;
     }
@@ -167,15 +169,39 @@ export default function PriceChart({
           <Tooltip content={<CustomTooltip />} />
           <Legend />
 
-          {isOverlap && (
-            <ReferenceArea
-              x1={refAreaX1}
-              x2={refAreaX2}
-              yAxisId="left"
-              fill="#ce93d8"
-              fillOpacity={0.2}
-            />
-          )}
+          {cropRange &&
+            highlightStart &&
+            highlightEnd &&
+            (() => {
+              const isOverlap =
+                isBefore(highlightStart, chartEnd) &&
+                isAfter(highlightEnd, chartStart);
+
+              // ปรับ refArea ให้ "ตัดทอน" ตามกราฟ
+              const refAreaX1 = isBefore(highlightStart, chartStart)
+                ? data[0].date // ถ้าเริ่มก่อนกราฟ ให้ใช้จุดแรกของกราฟ
+                : cropRange.from;
+
+              const refAreaX2 = isAfter(highlightEnd, chartEnd)
+                ? data[data.length - 1].date // ถ้าสิ้นสุดหลังกราฟ ให้ใช้จุดสุดท้ายของกราฟ
+                : cropRange.to;
+
+              const cropColorMap: Record<string, string> = {
+                Mangosteen: '#ba68c8',
+                Durian: '#fff176',
+                Longan: '#ffd54f',
+              };
+
+              return isOverlap ? (
+                <ReferenceArea
+                  x1={refAreaX1}
+                  x2={refAreaX2}
+                  yAxisId="left"
+                  fill={cropColorMap[selectedCrop] || '#e0e0e0'}
+                  fillOpacity={0.2}
+                />
+              ) : null;
+            })()}
 
           <Bar
             dataKey="volume"

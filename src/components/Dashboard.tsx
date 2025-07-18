@@ -127,7 +127,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <PriceChart data={chartData} color={cropData.color} height={400} />
+          <PriceChart
+            data={chartData}
+            color={cropData.color}
+            height={400}
+            selectedCrop={cropData.name}
+          />
         </div>
 
         {/* Farmer Assistance Section */}
