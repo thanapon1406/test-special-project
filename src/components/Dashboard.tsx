@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { CropType, TimeRange } from '@/types';
-import { crops, marketStats, getPredictionDataByTimeRange, getFarmerAssistance } from '@/data/mockData';
+import { crops, marketStats, getPredictionDataByTimeRange } from '@/data/mockData';
 import PriceChart from '@/components/PriceChart';
 import MarketStatsCard from '@/components/MarketStatsCard';
 import TimeRangeSelector from '@/components/TimeRangeSelector';
-import FarmerAlerts from '@/components/FarmerAlerts';
+// import FarmerAlerts from '@/components/FarmerAlerts';
 import FruitIcon from '@/components/FruitIcon';
 import { TrendingUp, Calendar } from 'lucide-react';
 
@@ -138,12 +138,12 @@ export default function Dashboard() {
         </div>
 
         {/* Farmer Assistance Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+        {/* <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
           <FarmerAlerts
             assistance={getFarmerAssistance(selectedCrop, timeRange)}
             cropName={cropData.name}
           />
-        </div>
+        </div> */}
 
         {/* Additional Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
