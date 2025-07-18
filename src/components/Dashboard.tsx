@@ -78,8 +78,8 @@ export default function Dashboard() {
                 <button
                   onClick={() => setLanguage('en')}
                   className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'en'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:text-blue-500'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:text-blue-500'
                     }`}
                 >
                   ENG
@@ -87,8 +87,8 @@ export default function Dashboard() {
                 <button
                   onClick={() => setLanguage('th')}
                   className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'th'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:text-blue-500'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:text-blue-500'
                     }`}
                 >
                   TH
@@ -133,6 +133,7 @@ export default function Dashboard() {
             stats={stats}
             cropName={cropData.name}
             cropIcon={cropData.icon}
+            language={language}
           />
         </div>
 
