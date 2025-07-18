@@ -3,6 +3,7 @@
 import { MarketStats } from '@/types';
 import { formatCurrency, formatNumber, formatPercentage, getChangeBgColor } from '@/lib/utils';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Brain } from 'lucide-react';
+import FruitIcon from '@/components/FruitIcon';
 
 interface MarketStatsCardProps {
   stats: MarketStats;
@@ -15,7 +16,7 @@ export default function MarketStatsCard({ stats, cropName, cropIcon }: MarketSta
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <span className="text-3xl">{cropIcon}</span>
+          <FruitIcon iconName={cropIcon} size={36} />
           <div>
             <h3 className="text-lg font-semibold text-gray-900">{cropName}</h3>
             <p className="text-sm text-gray-500">AI-Powered Price Analysis</p>
@@ -74,7 +75,7 @@ export default function MarketStatsCard({ stats, cropName, cropIcon }: MarketSta
             </span>
           </div>
         </div>
-        
+
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-1">
@@ -111,11 +112,10 @@ export default function MarketStatsCard({ stats, cropName, cropIcon }: MarketSta
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Supply Status</span>
-                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${
-                  stats.supplyStatus === 'high' ? 'bg-red-100 text-red-800' :
-                  stats.supplyStatus === 'low' ? 'bg-green-100 text-green-800' :
-                  'bg-blue-100 text-blue-800'
-                }`}>
+                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${stats.supplyStatus === 'high' ? 'bg-red-100 text-red-800' :
+                    stats.supplyStatus === 'low' ? 'bg-green-100 text-green-800' :
+                      'bg-blue-100 text-blue-800'
+                  }`}>
                   {stats.supplyStatus?.toUpperCase()}
                 </span>
               </div>
@@ -123,11 +123,10 @@ export default function MarketStatsCard({ stats, cropName, cropIcon }: MarketSta
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Price Outlook</span>
-                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${
-                  stats.priceOutlook === 'bearish' ? 'bg-red-100 text-red-800' :
-                  stats.priceOutlook === 'bullish' ? 'bg-green-100 text-green-800' :
-                  'bg-blue-100 text-blue-800'
-                }`}>
+                <span className={`text-sm font-medium px-2 py-1 rounded-full text-xs ${stats.priceOutlook === 'bearish' ? 'bg-red-100 text-red-800' :
+                    stats.priceOutlook === 'bullish' ? 'bg-green-100 text-green-800' :
+                      'bg-blue-100 text-blue-800'
+                  }`}>
                   {stats.priceOutlook?.toUpperCase()}
                 </span>
               </div>

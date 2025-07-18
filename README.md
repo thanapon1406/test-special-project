@@ -1,17 +1,19 @@
-# AgriPrice Pro - AI-Powered Agricultural Price Prediction Platform
+# Farm Link - AI-powered platform that helps farmers sell their products by predicting market prices
 
-A modern Next.js application designed to help farmers make informed decisions about crop pricing for rice, durian, and mango. The platform features interactive price charts, AI-powered predictions with supply-demand analysis, and comprehensive farmer assistance for challenging market conditions.
+A modern Next.js application designed to help farmers make informed decisions about crop pricing for mangosteen, durian, and longan. The platform features interactive price charts, AI-powered predictions with supply-demand analysis, and comprehensive farmer assistance for challenging market conditions.
 
 ## 🌟 Key Features
 
 ### Core Functionality
+
 - **Modern, Responsive UI**: Built with Tailwind CSS for a beautiful user experience across all devices
 - **Interactive Price Charts**: Real-time visualization using Recharts with historical and prediction data merged in one view
 - **AI-Powered Price Predictions**: Advanced forecasting models with confidence intervals and accuracy tracking
 - **Supply-Demand Analysis**: Integration of inventory levels and market supply factors in price predictions
-- **Multi-Crop Support**: Rice, Durian, and Mango price tracking and predictions with crop-specific factors
+- **Multi-Crop Support**: Mangosteen, Durian, and Longan price tracking and predictions with crop-specific factors
 
 ### Farmer Support System
+
 - **Early Warning Alerts**: 3-month advance notice when prices are predicted to drop significantly
 - **Farmer Assistance Center**: Actionable recommendations for low-price situations including:
   - Alternative marketing channels
@@ -23,6 +25,7 @@ A modern Next.js application designed to help farmers make informed decisions ab
 - **Emotional Support**: Encouraging messages and practical hope during challenging market periods
 
 ### Advanced Analytics
+
 - **Supply Status Indicators**: Real-time classification of market supply (Low/Normal/High)
 - **Price Outlook Predictions**: Bullish/Neutral/Bearish forecasts based on supply-demand dynamics
 - **AI Accuracy Tracking**: Transparent display of prediction accuracy percentages
@@ -62,18 +65,21 @@ src/
 ## 🎯 Features Overview
 
 ### Dashboard
-- **Crop Selection**: Easy switching between Rice, Durian, and Mango
+
+- **Crop Selection**: Easy switching between Mangosteen, Durian, and Longan
 - **Real-time Statistics**: Current prices, 24h/7d/30d changes, volume, and market cap
 - **Interactive Charts**: Historical price data with multiple time range options
 - **Price Predictions**: Future price forecasting with confidence intervals
 
 ### Price Analysis
+
 - **Historical Data**: Up to 1 year of historical price data
 - **Time Range Filters**: 7D, 1M, 3M, 6M, 1Y, and All time views
 - **Trend Analysis**: Visual indicators for price movements and market sentiment
 - **Volume Tracking**: Market volume data for supply-demand insights
 
 ### Farmer Tools
+
 - **Market Insights**: AI-generated insights about price trends and market conditions
 - **Selling Recommendations**: Optimal timing suggestions based on predictions
 - **Market Strategy**: Strategic advice for inventory management
@@ -98,23 +104,27 @@ The application uses sophisticated mock data generation that includes:
 ## 🛠 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone [repository-url]
 cd mockup-special-project
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -130,7 +140,7 @@ npm start
 
 ## 🎯 Usage
 
-1. **Select Crop**: Choose between Rice, Durian, or Mango from the crop selection cards
+1. **Select Crop**: Choose between Mangosteen, Durian, or Longan from the crop selection cards
 2. **View Statistics**: Monitor current price, changes, volume, and market cap
 3. **Analyze Trends**: Use the interactive chart to analyze historical price data
 4. **Switch Time Ranges**: Filter data by 7D, 1M, 3M, 6M, 1Y, or All time
@@ -149,6 +159,7 @@ npm start
 ## 📱 Responsive Design
 
 The platform is fully responsive and optimized for:
+
 - **Desktop**: Full-featured dashboard experience
 - **Tablet**: Optimized layout for medium screens
 - **Mobile**: Touch-friendly interface with essential features
@@ -167,6 +178,7 @@ This project is created for demonstration purposes. All price data is simulated 
 ## 🤝 Contributing
 
 This is a mockup project created for demonstration. For real-world implementation, consider:
+
 - Integrating with actual agricultural price APIs
 - Adding user authentication and personalization
 - Implementing real-time data updates
