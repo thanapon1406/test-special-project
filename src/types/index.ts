@@ -37,20 +37,20 @@ export interface MarketStats {
   aiAccuracy?: number;
   // New fields for inventory impact
   currentSupply?: number;
-  supplyStatus?: "low" | "normal" | "high";
-  priceOutlook?: "bullish" | "neutral" | "bearish";
+  supplyStatus?: 'low' | 'normal' | 'high';
+  priceOutlook?: 'bullish' | 'neutral' | 'bearish';
 }
 
 // New interface for farmer assistance
 export interface FarmerAssistance {
-  alertType: "warning" | "info" | "success";
+  alertType: 'warning' | 'info' | 'success';
   title: string;
   message: string;
   recommendations: string[];
   timeframe: string;
-  severity: "low" | "medium" | "high";
+  severity: 'low' | 'medium' | 'high';
 }
 
-export type TimeRange = "7d" | "1m" | "3m" | "6m" | "1y" | "all";
+export type TimeRange = '7d' | '1m' | '3m' | '6m' | '1y' | 'all';
 
-export type CropType = "rice" | "durian" | "mango";
+export type CropType = 'mangosteen' | 'durian' | 'longan';

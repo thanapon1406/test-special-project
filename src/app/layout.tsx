@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgriPrice Pro - Agricultural Price Prediction Platform",
-  description: "Modern platform helping farmers predict crop prices for Rice, Durian, and Mango with AI-powered market insights and trends analysis.",
+  title: "Farm Link - AI-powered platform that helps farmers sell their products by predicting market prices",
+  description: "Modern platform helping farmers predict crop prices for Mangosteen, Durian, and Longan with AI-powered market insights and trends analysis.",
 };
 
 export default function RootLayout({

@@ -4,34 +4,34 @@ import {
   PredictionData,
   MarketStats,
   FarmerAssistance,
-} from "@/types";
-import { subDays, format, addDays } from "date-fns";
+} from '@/types';
+import { subDays, format, addDays } from 'date-fns';
 
 // Crop information
 export const crops: Record<string, CropInfo> = {
-  rice: {
-    id: "rice",
-    name: "Rice",
-    icon: "🌾",
-    unit: "per kg",
-    color: "#10b981",
-    description: "Premium jasmine rice",
+  mangosteen: {
+    id: 'mangosteen',
+    name: 'Mangosteen',
+    icon: 'mangosteen-svgrepo-com.svg',
+    unit: 'per kg',
+    color: '#10b981',
+    description: 'Queen of Fruits',
   },
   durian: {
-    id: "durian",
-    name: "Durian",
-    icon: "🏆",
-    unit: "per kg",
-    color: "#f59e0b",
-    description: "King of fruits",
+    id: 'durian',
+    name: 'Durian',
+    icon: 'durian-svgrepo-com.svg',
+    unit: 'per kg',
+    color: '#f59e0b',
+    description: 'King of fruits',
   },
-  mango: {
-    id: "mango",
-    name: "Mango",
-    icon: "🥭",
-    unit: "per kg",
-    color: "#ef4444",
-    description: "Sweet tropical mango",
+  longan: {
+    id: 'longan',
+    name: 'Longan',
+    icon: 'longan-svgrepo-com.svg',
+    unit: 'per kg',
+    color: '#ef4444',
+    description: 'Dragon Eye Fruit',
   },
 };
 
@@ -46,14 +46,14 @@ const generatePriceData = (
   basePrice: number,
   days: number,
   volatility: number = 0.1,
-  seed: number = 12345
+  seed: number = 12345,
 ): PriceData[] => {
   const data: PriceData[] = [];
   let currentPrice = basePrice;
 
   for (let i = days; i >= 0; i--) {
     //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
-    const date = format(subDays(new Date(), i), "yyyy-MM-dd");
+    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
     const change =
       (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
     currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
@@ -70,9 +70,9 @@ const generatePriceData = (
 
 // Historical price data
 export const historicalData: Record<string, PriceData[]> = {
-  rice: generatePriceData(45, 365, 0.08, 1001),
+  mangosteen: generatePriceData(45, 365, 0.08, 1001),
   durian: generatePriceData(120, 365, 0.15, 2002),
-  mango: generatePriceData(85, 365, 0.12, 3003),
+  longan: generatePriceData(85, 365, 0.12, 3003),
 };
 
 // Generate prediction data with overlapping timeline and supply factors
@@ -81,7 +81,7 @@ const generatePredictionData = (
   daysHistorical: number = 30,
   daysAhead: number = 30,
   seed: number = 5555,
-  cropType: string = "rice"
+  cropType: string = 'mangosteen',
 ): PredictionData[] => {
   const data: PredictionData[] = [];
 
@@ -93,19 +93,19 @@ const generatePredictionData = (
 
   // Supply factors based on crop type (simulating market conditions)
   const supplyFactors = {
-    rice: { baseSupply: 15000, seasonality: 0.2, volatility: 0.15 },
+    mangosteen: { baseSupply: 15000, seasonality: 0.2, volatility: 0.15 },
     durian: { baseSupply: 8000, seasonality: 0.4, volatility: 0.25 },
-    mango: { baseSupply: 12000, seasonality: 0.3, volatility: 0.2 },
+    longan: { baseSupply: 12000, seasonality: 0.3, volatility: 0.2 },
   };
 
   const cropSupply =
-    supplyFactors[cropType as keyof typeof supplyFactors] || supplyFactors.rice;
+    supplyFactors[cropType as keyof typeof supplyFactors] ||
+    supplyFactors.mangosteen;
 
   // Add historical data with both current and predicted values for overlap
   recentHistorical.forEach((item, index) => {
     // Generate supply data for historical period
     const daysSinceStart = index - recentHistorical.length + 1;
-
     const seasonalSupply =
       cropSupply.baseSupply *
       (1 + Math.sin(daysSinceStart / 30) * cropSupply.seasonality);
@@ -143,7 +143,7 @@ const generatePredictionData = (
     //ออมสินเปลี่ยน เป็นค่าของวันพรุี่งนี้
     const futureDate = addDays(new Date(), 1);
     futureDate.setDate(futureDate.getDate() + i - 1);
-    const date = format(futureDate, "yyyy-MM-dd");
+    const date = format(futureDate, 'yyyy-MM-dd');
 
     // Predict future supply (seasonal patterns + random factors)
     const seasonalSupply =
@@ -164,7 +164,6 @@ const generatePredictionData = (
       basePrice *
       (1 + trendFactor * i + volatilityFactor + supplyImpact) *
       demandFactor;
-
     const confidence = Math.max(0.5, 1 - (i / daysAhead) * 0.5);
 
     data.push({
@@ -189,31 +188,49 @@ export const predictionData: Record<
   string,
   Record<string, PredictionData[]>
 > = {
-  rice: {
-    "7d": generatePredictionData(historicalData.rice, 7, 7, 4004, "rice"),
-    "1m": generatePredictionData(historicalData.rice, 30, 30, 4004, "rice"),
-    "3m": generatePredictionData(historicalData.rice, 90, 90, 4004, "rice"),
+  mangosteen: {
+    '7d': generatePredictionData(
+      historicalData.mangosteen,
+      7,
+      7,
+      4004,
+      'mangosteen',
+    ),
+    '1m': generatePredictionData(
+      historicalData.mangosteen,
+      30,
+      30,
+      4004,
+      'mangosteen',
+    ),
+    '3m': generatePredictionData(
+      historicalData.mangosteen,
+      90,
+      90,
+      4004,
+      'mangosteen',
+    ),
   },
   durian: {
-    "7d": generatePredictionData(historicalData.durian, 7, 7, 5005, "durian"),
-    "1m": generatePredictionData(historicalData.durian, 30, 30, 5005, "durian"),
-    "3m": generatePredictionData(historicalData.durian, 90, 90, 5005, "durian"),
+    '7d': generatePredictionData(historicalData.durian, 7, 7, 5005, 'durian'),
+    '1m': generatePredictionData(historicalData.durian, 30, 30, 5005, 'durian'),
+    '3m': generatePredictionData(historicalData.durian, 90, 90, 5005, 'durian'),
   },
-  mango: {
-    "7d": generatePredictionData(historicalData.mango, 7, 7, 6006, "mango"),
-    "1m": generatePredictionData(historicalData.mango, 30, 30, 6006, "mango"),
-    "3m": generatePredictionData(historicalData.mango, 90, 90, 6006, "mango"),
+  longan: {
+    '7d': generatePredictionData(historicalData.longan, 7, 7, 6006, 'longan'),
+    '1m': generatePredictionData(historicalData.longan, 30, 30, 6006, 'longan'),
+    '3m': generatePredictionData(historicalData.longan, 90, 90, 6006, 'longan'),
   },
 };
 
 // Calculate AI prediction accuracy
 export const calculatePredictionAccuracy = (crop: string): number => {
-  const cropPredictions = predictionData[crop]["1m"] || [];
+  const cropPredictions = predictionData[crop]['1m'] || [];
   if (!cropPredictions.length) return 0;
 
   // Calculate accuracy based on how close AI predictions were to actual historical prices
   const historicalData = cropPredictions.filter(
-    (item) => item.historical !== null && item.predicted !== null
+    (item) => item.historical !== null && item.predicted !== null,
   );
   if (!historicalData.length) return 0;
 
@@ -231,8 +248,9 @@ export const calculatePredictionAccuracy = (crop: string): number => {
 
 // Market statistics with supply information
 export const marketStats: Record<string, MarketStats> = {
-  rice: {
-    currentPrice: historicalData.rice[historicalData.rice.length - 1].price,
+  mangosteen: {
+    currentPrice:
+      historicalData.mangosteen[historicalData.mangosteen.length - 1].price,
     change24h: 2.4,
     change7d: -1.2,
     change30d: 5.8,
@@ -240,8 +258,8 @@ export const marketStats: Record<string, MarketStats> = {
     marketCap: 2340000,
     aiAccuracy: 87,
     currentSupply: 18500, // High supply causing price pressure
-    supplyStatus: "high",
-    priceOutlook: "bearish",
+    supplyStatus: 'high',
+    priceOutlook: 'bearish',
   },
   durian: {
     currentPrice: historicalData.durian[historicalData.durian.length - 1].price,
@@ -252,11 +270,11 @@ export const marketStats: Record<string, MarketStats> = {
     marketCap: 1850000,
     aiAccuracy: 82,
     currentSupply: 7200, // Normal supply
-    supplyStatus: "normal",
-    priceOutlook: "neutral",
+    supplyStatus: 'normal',
+    priceOutlook: 'neutral',
   },
-  mango: {
-    currentPrice: historicalData.mango[historicalData.mango.length - 1].price,
+  longan: {
+    currentPrice: historicalData.longan[historicalData.longan.length - 1].price,
     change24h: 1.8,
     change7d: 2.1,
     change30d: -3.2,
@@ -264,15 +282,15 @@ export const marketStats: Record<string, MarketStats> = {
     marketCap: 1920000,
     aiAccuracy: 91,
     currentSupply: 10800, // Low supply relative to demand
-    supplyStatus: "low",
-    priceOutlook: "bullish",
+    supplyStatus: 'low',
+    priceOutlook: 'bullish',
   },
 };
 
 // Helper function to get prediction data by time range
 export const getPredictionDataByTimeRange = (
   crop: string,
-  range: string
+  range: string,
 ): PredictionData[] => {
   const cropPredictions = predictionData[crop];
 
@@ -280,56 +298,56 @@ export const getPredictionDataByTimeRange = (
 
   // Map time ranges to available prediction data
   switch (range) {
-    case "7d":
-      return cropPredictions["7d"] || [];
-    case "1m":
-      return cropPredictions["1m"] || [];
-    case "3m":
-    case "6m":
-    case "1y":
-    case "all":
-      return cropPredictions["3m"] || [];
+    case '7d':
+      return cropPredictions['7d'] || [];
+    case '1m':
+      return cropPredictions['1m'] || [];
+    case '3m':
+    case '6m':
+    case '1y':
+    case 'all':
+      return cropPredictions['3m'] || [];
     default:
-      return cropPredictions["1m"] || [];
+      return cropPredictions['1m'] || [];
   }
 };
 
 // Helper function to get data by time range
 export const getDataByTimeRange = (
   data: PriceData[],
-  range: string
+  range: string,
 ): PriceData[] => {
-  const baseDate = new Date("2024-12-31"); // Use static reference date
+  const baseDate = new Date('2024-12-31'); // Use static reference date
   let startDate: Date;
 
   switch (range) {
-    case "7d":
+    case '7d':
       startDate = subDays(baseDate, 7);
       break;
-    case "1m":
+    case '1m':
       startDate = subDays(baseDate, 30);
       break;
-    case "3m":
+    case '3m':
       startDate = subDays(baseDate, 90);
       break;
-    case "6m":
+    case '6m':
       startDate = subDays(baseDate, 180);
       break;
-    case "1y":
+    case '1y':
       startDate = subDays(baseDate, 365);
       break;
     default:
       return data;
   }
 
-  const startDateStr = format(startDate, "yyyy-MM-dd");
+  const startDateStr = format(startDate, 'yyyy-MM-dd');
   return data.filter((d) => d.date >= startDateStr);
 };
 
 // Farmer assistance system - analyzes price trends and provides recommendations
 export const getFarmerAssistance = (
   crop: string,
-  timeRange: string = "3m"
+  timeRange: string = '3m',
 ): FarmerAssistance[] => {
   const stats = marketStats[crop];
   const predictions = getPredictionDataByTimeRange(crop, timeRange);
@@ -339,7 +357,7 @@ export const getFarmerAssistance = (
 
   // Calculate average predicted price for next 3 months
   const futurePredictions = predictions.filter(
-    (p) => p.predicted !== null && p.historical === null
+    (p) => p.predicted !== null && p.historical === null,
   );
   const avgFuturePrice =
     futurePredictions.reduce((sum, p) => sum + (p.predicted || 0), 0) /
@@ -348,43 +366,43 @@ export const getFarmerAssistance = (
   const priceChange = ((avgFuturePrice - currentPrice) / currentPrice) * 100;
 
   // Check for oversupply situation
-  if (stats.supplyStatus === "high" && priceChange < -10) {
+  if (stats.supplyStatus === 'high' && priceChange < -10) {
     assistance.push({
-      alertType: "warning",
-      title: "⚠️ Oversupply Alert: Low Prices Expected",
+      alertType: 'warning',
+      title: '⚠️ Oversupply Alert: Low Prices Expected',
       message: `Our AI predicts ${crop} prices will drop by ${Math.abs(
-        priceChange
+        priceChange,
       ).toFixed(1)}% over the next 3 months due to high supply in the market.`,
       recommendations: [
-        "🏪 Consider alternative marketing channels (direct sales, farmers markets)",
-        "🔄 Explore value-added processing options (dried, canned, preserved)",
-        "📦 Investigate storage options to sell when prices recover",
-        "🤝 Form cooperatives with other farmers to negotiate better bulk prices",
-        "🌱 Consider diversifying crops for next season",
-        "💰 Look into government agricultural support programs",
+        '🏪 Consider alternative marketing channels (direct sales, farmers markets)',
+        '🔄 Explore value-added processing options (dried, canned, preserved)',
+        '📦 Investigate storage options to sell when prices recover',
+        '🤝 Form cooperatives with other farmers to negotiate better bulk prices',
+        '🌱 Consider diversifying crops for next season',
+        '💰 Look into government agricultural support programs',
       ],
-      timeframe: "Next 3 months",
-      severity: "high",
+      timeframe: 'Next 3 months',
+      severity: 'high',
     });
   }
 
   // Check for supply shortage (good for farmers)
-  if (stats.supplyStatus === "low" && priceChange > 5) {
+  if (stats.supplyStatus === 'low' && priceChange > 5) {
     assistance.push({
-      alertType: "success",
-      title: "📈 Market Opportunity: Strong Prices Ahead",
+      alertType: 'success',
+      title: '📈 Market Opportunity: Strong Prices Ahead',
       message: `Great news! ${crop} supply is low and our AI predicts prices will increase by ${priceChange.toFixed(
-        1
+        1,
       )}% over the next 3 months.`,
       recommendations: [
-        "⏰ Hold your inventory if possible - prices are trending upward",
-        "🎯 Plan to sell during peak demand periods",
-        "📈 Consider premium pricing for high-quality produce",
-        "🌟 Market directly to restaurants and premium buyers",
-        "📱 Use digital platforms to reach wider customer base",
+        '⏰ Hold your inventory if possible - prices are trending upward',
+        '🎯 Plan to sell during peak demand periods',
+        '📈 Consider premium pricing for high-quality produce',
+        '🌟 Market directly to restaurants and premium buyers',
+        '📱 Use digital platforms to reach wider customer base',
       ],
-      timeframe: "Next 3 months",
-      severity: "low",
+      timeframe: 'Next 3 months',
+      severity: 'low',
     });
   }
 
@@ -395,24 +413,24 @@ export const getFarmerAssistance = (
 
   if (Math.abs(supplyImpact) > 0.1) {
     assistance.push({
-      alertType: "info",
-      title: "📊 Supply-Demand Analysis",
+      alertType: 'info',
+      title: '📊 Supply-Demand Analysis',
       message: `Market supply levels are ${
-        supplyImpact < 0 ? "above" : "below"
+        supplyImpact < 0 ? 'above' : 'below'
       } normal, creating ${
-        supplyImpact < 0 ? "downward" : "upward"
+        supplyImpact < 0 ? 'downward' : 'upward'
       } pressure on ${crop} prices.`,
       recommendations: [
         `📊 Current market supply: ${
-          stats.currentSupply?.toLocaleString() || "N/A"
+          stats.currentSupply?.toLocaleString() || 'N/A'
         } kg`,
         `📈 Supply status: ${stats.supplyStatus?.toUpperCase()}`,
         `🔮 Price outlook: ${stats.priceOutlook?.toUpperCase()}`,
-        "📱 Use our AI predictions to time your sales optimally",
-        "🎯 Focus on quality to command premium prices",
+        '📱 Use our AI predictions to time your sales optimally',
+        '🎯 Focus on quality to command premium prices',
       ],
-      timeframe: "Ongoing",
-      severity: "medium",
+      timeframe: 'Ongoing',
+      severity: 'medium',
     });
   }
 
@@ -422,12 +440,12 @@ export const getFarmerAssistance = (
 // Get current market conditions summary
 export const getMarketConditions = (crop: string) => {
   const stats = marketStats[crop];
-  const predictions = getPredictionDataByTimeRange(crop, "3m");
+  const predictions = getPredictionDataByTimeRange(crop, '3m');
 
   if (!stats || !predictions.length) return null;
 
   const futurePredictions = predictions.filter(
-    (p) => p.predicted !== null && p.historical === null
+    (p) => p.predicted !== null && p.historical === null,
   );
   const avgSupplyImpact =
     futurePredictions.reduce((sum, p) => sum + (p.supplyImpact || 0), 0) /

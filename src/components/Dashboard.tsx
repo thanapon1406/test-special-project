@@ -1,24 +1,30 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { CropType, TimeRange } from "@/types";
+import { useState, useEffect } from 'react';
+import { CropType, TimeRange } from '@/types';
 import {
   crops,
   marketStats,
   getPredictionDataByTimeRange,
   getFarmerAssistance,
-} from "@/data/mockData";
-import PriceChart from "@/components/PriceChart";
-import MarketStatsCard from "@/components/MarketStatsCard";
-import TimeRangeSelector from "@/components/TimeRangeSelector";
-import FarmerAlerts from "@/components/FarmerAlerts";
-import { TrendingUp, Calendar } from "lucide-react";
+} from '@/data/mockData';
+import PriceChart from '@/components/PriceChart';
+import MarketStatsCard from '@/components/MarketStatsCard';
+import TimeRangeSelector from '@/components/TimeRangeSelector';
+import FarmerAlerts from '@/components/FarmerAlerts';
+import FruitIcon from '@/components/FruitIcon';
+import { TrendingUp, Calendar } from 'lucide-react';
 
 export default function Dashboard() {
-  const [selectedCrop, setSelectedCrop] = useState<CropType>("rice");
-  const [timeRange, setTimeRange] = useState<TimeRange>("1m");
+  const [selectedCrop, setSelectedCrop] = useState<CropType>('mangosteen');
+  const [timeRange, setTimeRange] = useState<TimeRange>('1m');
   const [isClient, setIsClient] = useState(false);
-
+  const date = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'Asia/Bangkok', // UTC+7
+  });
   // Ensure client-side rendering
   useEffect(() => {
     setIsClient(true);
@@ -29,7 +35,7 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading AgriPrice Pro...</p>
+          <p className="mt-4 text-gray-600">Loading Farm Link...</p>
         </div>
       </div>
     );
@@ -38,11 +44,11 @@ export default function Dashboard() {
   // Deterministic prediction insights based on crop
   const getPredictionInsight = (cropName: string) => {
     const insights: Record<string, { trend: string; confidence: number }> = {
-      Rice: { trend: "increase", confidence: 78 },
-      Durian: { trend: "stabilize", confidence: 72 },
-      Mango: { trend: "increase", confidence: 85 },
+      Mangosteen: { trend: 'increase', confidence: 78 },
+      Durian: { trend: 'stabilize', confidence: 72 },
+      Longan: { trend: 'increase', confidence: 85 },
     };
-    return insights[cropName] || insights["Rice"];
+    return insights[cropName] || insights['Mangosteen'];
   };
 
   const cropData = crops[selectedCrop];
@@ -61,18 +67,17 @@ export default function Dashboard() {
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  AgriPrice Pro
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">Farm Link</h1>
                 <p className="text-sm text-gray-600">
-                  Agricultural Price Prediction Platform
+                  AI-powered platform that helps farmers sell their products by
+                  predicting market prices
                 </p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                Live Market Data
+                Current Market Data – {date}
               </div>
             </div>
           </div>
@@ -92,12 +97,12 @@ export default function Dashboard() {
                 onClick={() => setSelectedCrop(key as CropType)}
                 className={`p-4 rounded-xl border-2 transition-all duration-200 ${
                   selectedCrop === key
-                    ? "border-green-500 bg-green-50 shadow-md"
-                    : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm"
+                    ? 'border-green-500 bg-green-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{crop.icon}</span>
+                  <FruitIcon iconName={crop.icon} size={32} />
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900">{crop.name}</h3>
                     <p className="text-sm text-gray-600">{crop.description}</p>
@@ -123,7 +128,7 @@ export default function Dashboard() {
             <div className="flex items-center space-x-3">
               <Calendar className="w-5 h-5 text-gray-400" />
               <h2 className="text-lg font-semibold text-gray-900">
-                AI Price Analysis & Prediction ({timeRange.toUpperCase()}{" "}
+                AI Price Analysis & Prediction ({timeRange.toUpperCase()}{' '}
                 Historical + Forecast)
               </h2>
             </div>
@@ -168,7 +173,7 @@ export default function Dashboard() {
                     <p className="text-sm text-blue-700 mt-1">
                       AI model predicts {cropData.name.toLowerCase()} prices
                       will {getPredictionInsight(cropData.name).trend} over the
-                      next 30 days with{" "}
+                      next 30 days with{' '}
                       {getPredictionInsight(cropData.name).confidence}%
                       confidence.
                     </p>
@@ -186,7 +191,7 @@ export default function Dashboard() {
                       Seasonal Outlook
                     </h4>
                     <p className="text-sm text-green-700 mt-1">
-                      Current season conditions are favorable for{" "}
+                      Current season conditions are favorable for{' '}
                       {cropData.name.toLowerCase()}
                       with stable supply and growing demand.
                     </p>
@@ -207,10 +212,10 @@ export default function Dashboard() {
                   AI Selling Recommendation
                 </h4>
                 <p className="text-sm text-yellow-700">
-                  Based on 30-day forecast, optimal selling window is in{" "}
-                  {getPredictionInsight(cropData.name).trend === "increase"
-                    ? "3-4 weeks"
-                    : "1-2 weeks"}{" "}
+                  Based on 30-day forecast, optimal selling window is in{' '}
+                  {getPredictionInsight(cropData.name).trend === 'increase'
+                    ? '3-4 weeks'
+                    : '1-2 weeks'}{' '}
                   when prices reach predicted maximum.
                 </p>
               </div>
@@ -220,10 +225,10 @@ export default function Dashboard() {
                   AI Inventory Strategy
                 </h4>
                 <p className="text-sm text-purple-700">
-                  AI recommends{" "}
-                  {getPredictionInsight(cropData.name).trend === "increase"
-                    ? "holding inventory for price appreciation"
-                    : "gradual selling to avoid market saturation"}{" "}
+                  AI recommends{' '}
+                  {getPredictionInsight(cropData.name).trend === 'increase'
+                    ? 'holding inventory for price appreciation'
+                    : 'gradual selling to avoid market saturation'}{' '}
                   based on forecasted demand patterns.
                 </p>
               </div>
