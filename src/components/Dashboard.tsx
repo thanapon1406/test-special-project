@@ -20,6 +20,16 @@ export default function Dashboard() {
   // Translation function
   const t = (en: string, th: string) => language === 'en' ? en : th;
 
+  // Crop name translation
+  const getCropNameTranslation = (name: string) => {
+    const translations: Record<string, string> = {
+      'Mangosteen': 'มังคุด',
+      'Durian': 'ทุเรียน',
+      'Longan': 'ลำไย'
+    };
+    return language === 'th' ? translations[name] || name : name;
+  };
+
   const date = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'th-TH', {
     year: 'numeric',
     month: 'long',
@@ -118,7 +128,7 @@ export default function Dashboard() {
                 <div className="flex items-center space-x-3">
                   <FruitIcon iconName={crop.icon} size={32} />
                   <div className="text-left">
-                    <h3 className="font-semibold text-gray-900">{crop.name}</h3>
+                    <h3 className="font-semibold text-gray-900">{getCropNameTranslation(crop.name)}</h3>
                     <p className="text-sm text-gray-600">{crop.description}</p>
                   </div>
                 </div>

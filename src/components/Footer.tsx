@@ -153,6 +153,16 @@ const getProcessingOptions = (cropName: string): ProcessingOption[] => {
 export default function Footer({ cropData, language = 'en' }: FooterProps) {
     // Translation function
     const t = (en: string, th: string) => language === 'en' ? en : th;
+
+    // Crop name translation
+    const getCropNameTranslation = (name: string) => {
+        const translations: Record<string, string> = {
+            'Mangosteen': 'มังคุด',
+            'Durian': 'ทุเรียน',
+            'Longan': 'ลำไย'
+        };
+        return language === 'th' ? translations[name] || name : name;
+    };
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Market Insights */}
@@ -168,7 +178,7 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                             </div>
                             <div className="w-full">
                                 <h4 className="font-medium text-blue-900 mb-3">
-                                    {t(`${cropData.name} Processing Products`, `ผลิตภัณฑ์แปรรูป ${cropData.name}`)}
+                                    {t(`${getCropNameTranslation(cropData.name)} Processing Products`, `ผลิตภัณฑ์แปรรูป${getCropNameTranslation(cropData.name)}`)}
                                 </h4>
                                 {getProcessingOptions(cropData.name).map((category, index) => (
                                     <div key={index} className="mb-3">
@@ -199,8 +209,8 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                                 </h4>
                                 <p className="text-sm text-green-700 mt-1">
                                     {t(
-                                        `The processed ${cropData.name.toLowerCase()} market is showing growth trends, particularly in health and wellness product segments.`,
-                                        `ตลาด${cropData.name.toLowerCase()}แปรรูปกำลังแสดงแนวโน้มการเติบโต โดยเฉพาะในส่วนผลิตภัณฑ์สุขภาพและความงาม`
+                                        `The processed ${getCropNameTranslation(cropData.name).toLowerCase()} market is showing growth trends, particularly in health and wellness product segments.`,
+                                        `ตลาด${getCropNameTranslation(cropData.name).toLowerCase()}แปรรูปกำลังแสดงแนวโน้มการเติบโต โดยเฉพาะในส่วนผลิตภัณฑ์สุขภาพและความงาม`
                                     )}
                                 </p>
                             </div>
@@ -237,8 +247,8 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                         </h4>
                         <p className="text-sm text-purple-700">
                             {t(
-                                `Join our network of premium ${cropData.name.toLowerCase()} farms. We provide market access, price prediction tools, and direct buyer connections.`,
-                                `เข้าร่วมเครือข่ายฟาร์ม${cropData.name.toLowerCase()}คุณภาพสูงของเรา เราให้บริการการเข้าถึงตลาด เครื่องมือทำนายราคา และการเชื่อมต่อผู้ซื้อโดยตรง`
+                                `Join our network of premium ${getCropNameTranslation(cropData.name).toLowerCase()} farms. We provide market access, price prediction tools, and direct buyer connections.`,
+                                `เข้าร่วมเครือข่ายฟาร์ม${getCropNameTranslation(cropData.name).toLowerCase()}คุณภาพสูงของเรา เราให้บริการการเข้าถึงตลาด เครื่องมือทำนายราคา และการเชื่อมต่อผู้ซื้อโดยตรง`
                             )}
                         </p>
                     </div>

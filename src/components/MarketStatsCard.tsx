@@ -15,13 +15,23 @@ interface MarketStatsCardProps {
 export default function MarketStatsCard({ stats, cropName, cropIcon, language = 'en' }: MarketStatsCardProps) {
   // Translation function
   const t = (en: string, th: string) => language === 'en' ? en : th;
+
+  // Crop name translation
+  const getCropNameTranslation = (name: string) => {
+    const translations: Record<string, string> = {
+      'Mangosteen': 'มังคุด',
+      'Durian': 'ทุเรียน',
+      'Longan': 'ลำไย'
+    };
+    return language === 'th' ? translations[name] || name : name;
+  };
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <FruitIcon iconName={cropIcon} size={36} />
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{cropName}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{getCropNameTranslation(cropName)}</h3>
             <p className="text-sm text-gray-500">
               {t('AI-Powered Price Analysis', 'การวิเคราะห์ราคาโดย AI')}
             </p>
