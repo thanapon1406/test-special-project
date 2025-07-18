@@ -51,4 +51,4 @@ export interface FarmerAssistance {
 
 export type TimeRange = '7d' | '1m' | '3m' | '6m' | '1y' | 'all';
 
-export type CropType = 'rice' | 'durian' | 'mango';
+export type CropType = 'mangosteen' | 'durian' | 'longan';
