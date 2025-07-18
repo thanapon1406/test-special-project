@@ -30,6 +30,15 @@ export default function Dashboard() {
     return language === 'th' ? translations[name] || name : name;
   };
 
+  const getCropDesTranslation = (name: string) => {
+    const translations: Record<string, string> = {
+      'Queen of Fruits': 'ราชินีแห่งผลไม้',
+      'King of fruits': 'ราชาแห่งผลไม้',
+      'Dragon Eye Fruit': 'ตามังกรแห่งผลไม้'
+    };
+    return language === 'th' ? translations[name] || name : name;
+  };
+
   const date = new Date().toLocaleDateString(language === 'en' ? 'en-US' : 'th-TH', {
     year: 'numeric',
     month: 'long',
@@ -129,7 +138,7 @@ export default function Dashboard() {
                   <FruitIcon iconName={crop.icon} size={32} />
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900">{getCropNameTranslation(crop.name)}</h3>
-                    <p className="text-sm text-gray-600">{crop.description}</p>
+                    <p className="text-sm text-gray-600">{getCropDesTranslation(crop.description)}</p>
                   </div>
                 </div>
               </button>
