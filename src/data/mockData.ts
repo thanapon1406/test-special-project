@@ -68,11 +68,25 @@ const generatePriceData = (
   return data;
 };
 
-// Historical price data
+import { realPriceData } from './realPriceData';
+
+// Historical price data from real data
 export const historicalData: Record<string, PriceData[]> = {
-  mangosteen: generatePriceData(45, 365, 0.08, 1001),
-  durian: generatePriceData(120, 365, 0.15, 2002),
-  longan: generatePriceData(85, 365, 0.12, 3003),
+  mangosteen: realPriceData.mangosteen.map(item => ({
+    date: item.date + "-01", // Add day to make it full date
+    price: item.price,
+    volume: Math.floor(Math.random() * 1000) + 500 // Random volume for visualization
+  })),
+  durian: realPriceData.durian.map(item => ({
+    date: item.date + "-01",
+    price: item.price,
+    volume: Math.floor(Math.random() * 1000) + 500
+  })),
+  longan: realPriceData.longan.map(item => ({
+    date: item.date + "-01",
+    price: item.price,
+    volume: Math.floor(Math.random() * 1000) + 500
+  }))
 };
 
 // Generate prediction data with overlapping timeline and supply factors
@@ -89,7 +103,8 @@ const generatePredictionData = (
   const recentHistorical = historical.slice(-daysHistorical);
   const basePrice = recentHistorical[recentHistorical.length - 1].price;
 
-  const averageCost = basePrice - 50;
+  // Calculate average cost based on historical prices (70% of average historical price)
+  const averageCost = (recentHistorical.reduce((sum, item) => sum + item.price, 0) / recentHistorical.length) * 0.7;
 
   // Supply factors based on crop type (simulating market conditions)
   const supplyFactors = {
@@ -118,10 +133,23 @@ const generatePredictionData = (
       -((estimatedSupply - cropSupply.baseSupply) / cropSupply.baseSupply) *
       0.5;
 
-    // Generate "what AI would have predicted" for this historical point
-    const trendFactor = (seededRandom(seed + index) - 0.4) * 0.02;
-    const supplyAdjustedPrice =
-      basePrice * (1 + trendFactor * Math.abs(daysSinceStart) + supplyImpact);
+    // Generate prediction with natural movement but staying within ±20% of actual price
+    const maxDeviation = 0.20; // 20% maximum deviation
+    const trendFactor = (seededRandom(seed + index) - 0.5) * 0.03; // Increased trend variation
+    const volatilityFactor = (seededRandom(seed + index + 100) - 0.5) * 0.06; // More volatility
+    const randomOffset = (seededRandom(seed + index + 200) - 0.5) * 0.04; // Larger random offset
+    
+    // Calculate prediction with more variations from actual price
+    let supplyAdjustedPrice = item.price * (1 + trendFactor + volatilityFactor + randomOffset);
+    
+    // Add larger oscillation based on day count
+    const oscillation = Math.sin(daysSinceStart / 5) * 0.04;
+    supplyAdjustedPrice *= (1 + oscillation);
+    
+    // Ensure prediction stays within ±20% of actual price
+    const minPrice = item.price * (1 - maxDeviation);
+    const maxPrice = item.price * (1 + maxDeviation);
+    supplyAdjustedPrice = Math.min(Math.max(supplyAdjustedPrice, minPrice), maxPrice);
 
     data.push({
       date: item.date,
@@ -155,15 +183,26 @@ const generatePredictionData = (
     const supplyImpact =
       -((futureSupply - cropSupply.baseSupply) / cropSupply.baseSupply) * 0.6;
 
-    // Create realistic future predictions with supply factors
-    const trendFactor = (seededRandom(seed + i + 1000) - 0.4) * 0.03;
-    const volatilityFactor = (seededRandom(seed + i + 2000) - 0.5) * 0.05;
-    const demandFactor = 1 + (seededRandom(seed + i + 400) - 0.5) * 0.15;
-
-    const predicted =
-      basePrice *
-      (1 + trendFactor * i + volatilityFactor + supplyImpact) *
-      demandFactor;
+    // Use the last historical price as reference for future predictions
+    const lastHistoricalPrice = recentHistorical[recentHistorical.length - 1].price;
+    
+    // Calculate prediction with similar pattern as historical
+    const maxDeviation = 0.20; // 20% maximum deviation
+    const trendFactor = (seededRandom(seed + i + 1000) - 0.5) * 0.03;
+    const volatilityFactor = (seededRandom(seed + i + 2000) - 0.5) * 0.06;
+    const randomOffset = (seededRandom(seed + i + 200) - 0.5) * 0.04;
+    const demandFactor = 1 + (seededRandom(seed + i + 400) - 0.5) * 0.08;
+    
+    // Add oscillation for natural movement
+    const oscillation = Math.sin(i / 5) * 0.04;
+    
+    // Calculate predicted price with demand factor
+    let predicted = lastHistoricalPrice * (1 + trendFactor + volatilityFactor + randomOffset + oscillation) * demandFactor;
+    
+    // Ensure prediction stays within ±20% of last historical price
+    const minPrice = lastHistoricalPrice * (1 - maxDeviation);
+    const maxPrice = lastHistoricalPrice * (1 + maxDeviation);
+    predicted = Math.min(Math.max(predicted, minPrice), maxPrice);
     const confidence = Math.max(0.5, 1 - (i / daysAhead) * 0.5);
 
     data.push({
@@ -210,16 +249,43 @@ export const predictionData: Record<
       4004,
       'mangosteen',
     ),
+    '6m': generatePredictionData(
+      historicalData.mangosteen,
+      180,
+      180,
+      4004,
+      'mangosteen',
+    ),
+    '1y': generatePredictionData(
+      historicalData.mangosteen,
+      365,
+      365,
+      4004,
+      'mangosteen',
+    ),
+    'all': generatePredictionData(
+      historicalData.mangosteen,
+      365,
+      365,
+      4004,
+      'mangosteen',
+    ),
   },
   durian: {
     '7d': generatePredictionData(historicalData.durian, 7, 7, 5005, 'durian'),
     '1m': generatePredictionData(historicalData.durian, 30, 30, 5005, 'durian'),
     '3m': generatePredictionData(historicalData.durian, 90, 90, 5005, 'durian'),
+    '6m': generatePredictionData(historicalData.durian, 180, 180, 5005, 'durian'),
+    '1y': generatePredictionData(historicalData.durian, 365, 365, 5005, 'durian'),
+    'all': generatePredictionData(historicalData.durian, 365, 365, 5005, 'durian'),
   },
   longan: {
     '7d': generatePredictionData(historicalData.longan, 7, 7, 6006, 'longan'),
     '1m': generatePredictionData(historicalData.longan, 30, 30, 6006, 'longan'),
     '3m': generatePredictionData(historicalData.longan, 90, 90, 6006, 'longan'),
+    '6m': generatePredictionData(historicalData.longan, 180, 180, 6006, 'longan'),
+    '1y': generatePredictionData(historicalData.longan, 365, 365, 6006, 'longan'),
+    'all': generatePredictionData(historicalData.longan, 365, 365, 6006, 'longan'),
   },
 };
 
@@ -296,20 +362,8 @@ export const getPredictionDataByTimeRange = (
 
   if (!cropPredictions) return [];
 
-  // Map time ranges to available prediction data
-  switch (range) {
-    case '7d':
-      return cropPredictions['7d'] || [];
-    case '1m':
-      return cropPredictions['1m'] || [];
-    case '3m':
-    case '6m':
-    case '1y':
-    case 'all':
-      return cropPredictions['3m'] || [];
-    default:
-      return cropPredictions['1m'] || [];
-  }
+  // Return the specific time range data if it exists
+  return cropPredictions[range] || [];
 };
 
 // Helper function to get data by time range
