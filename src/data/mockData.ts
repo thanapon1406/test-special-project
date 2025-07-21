@@ -5,6 +5,7 @@ import {
   MarketStats,
   FarmerAssistance,
 } from '@/types';
+import { volumeData } from './volumeData';
 import { subDays, format, addDays } from 'date-fns';
 
 // Crop information
@@ -104,6 +105,10 @@ const generatePredictionData = (
 
   // Add historical data with both current and predicted values for overlap
   recentHistorical.forEach((item, index) => {
+    // Get volume from table2.csv data
+    const itemYearMonth = item.date.substring(0, 7); // Get YYYY-MM
+    const volumeForDate = volumeData[cropType]?.find(v => v.date === itemYearMonth)?.volume || 0;
+
     // Generate supply data for historical period
     const daysSinceStart = index - recentHistorical.length + 1;
     const seasonalSupply =
@@ -132,23 +137,25 @@ const generatePredictionData = (
       estimatedSupply: Number(estimatedSupply.toFixed(0)),
       supplyImpact: Number(supplyImpact.toFixed(3)),
       demandTrend: 1 + (seededRandom(seed + index + 200) - 0.5) * 0.1,
-      //ออมสินเพิ่มค่าของ ต้นทุน และ volume
       average: averageCost,
-      volume: Number(estimatedSupply.toFixed(0)),
+      volume: volumeForDate, // Use volume from table2.csv
     });
   });
 
   // Add future predictions starting from the day after last historical
   for (let i = 1; i <= daysAhead; i++) {
-    //ออมสินเปลี่ยน เป็นค่าของวันพรุี่งนี้
     const futureDate = addDays(new Date(), 1);
     futureDate.setDate(futureDate.getDate() + i - 1);
     const date = format(futureDate, 'yyyy-MM-dd');
+    const yearMonth = date.substring(0, 7); // Get YYYY-MM
+
+    // Get volume from table2.csv data for future date
+    const volumeForDate = volumeData[cropType]?.find(v => v.date === yearMonth)?.volume || 0;
 
     // Predict future supply (seasonal patterns + random factors)
     const seasonalSupply =
       cropSupply.baseSupply * (1 + Math.sin(i / 30) * cropSupply.seasonality);
-    const supplyTrend = 1 + (seededRandom(seed + i + 300) - 0.3) * 0.2; // Slight oversupply trend
+    const supplyTrend = 1 + (seededRandom(seed + i + 300) - 0.3) * 0.2;
     const futureSupply = seasonalSupply * supplyTrend;
 
     // Calculate supply impact on future prices
@@ -175,8 +182,8 @@ const generatePredictionData = (
       estimatedSupply: Number(futureSupply.toFixed(0)),
       supplyImpact: Number(supplyImpact.toFixed(3)),
       demandTrend: Number(demandFactor.toFixed(3)),
-      //ออมสินเพิ่่ม ค่าของ ต้นทุน
       average: averageCost,
+      volume: volumeForDate, // Use volume from table2.csv
     });
   }
 
