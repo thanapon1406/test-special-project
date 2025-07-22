@@ -1,8 +1,8 @@
 'use client';
 
-import { TimeRange } from '@/types';
 import { cn } from '@/lib/utils';
 
+export type TimeRange = '7d' | '1m' | '3m' | '6m' | '1y' | 'all';
 interface TimeRangeSelectorProps {
   selectedRange: TimeRange;
   onRangeChange: (range: TimeRange) => void;
