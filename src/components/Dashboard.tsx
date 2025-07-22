@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CropType, TimeRange } from '@/types';
+// Define TimeRange type locally since it's not exported from '@/types'
+type TimeRange = '1w' | '1m' | '3m' | '1y';
+// If CropType is missing, define it here or import the correct type
+type CropType = 'mangosteen' | 'durian' | 'longan';
 import { crops, marketStats, getPredictionDataByTimeRange } from '@/data/mockData';
 import PriceChart from '@/components/PriceChart';
 import MarketStatsCard from '@/components/MarketStatsCard';
