@@ -1,10 +1,57 @@
-import {
-  CropInfo,
-  PriceData,
-  PredictionData,
-  MarketStats,
-  FarmerAssistance,
-} from '@/types';
+// Define CropInfo type locally (customize fields as needed)
+export type CropInfo = {
+  id: string;
+  name: string;
+  icon: string;
+  unit: string;
+  color: string;
+  description: string;
+};
+
+// Define PriceData type here if not exported from '@/types'
+export type PriceData = {
+  date: string;
+  price: number;
+  volume?: number;
+};
+
+// Define MarketStats type here if not exported from '@/types'
+export type MarketStats = {
+  currentPrice: number;
+  change24h: number;
+  change7d: number;
+  change30d: number;
+  volume: number;
+  marketCap: number;
+  aiAccuracy: number;
+  currentSupply: number;
+  supplyStatus: string;
+  priceOutlook: string;
+};
+
+// Define PredictionData type here if not exported from '@/types'
+export type PredictionData = {
+  date: string;
+  historical: number | null;
+  current: number | null;
+  predicted: number | null;
+  confidence: number;
+  estimatedSupply?: number;
+  supplyImpact?: number;
+  demandTrend?: number;
+  average?: number;
+  volume?: number;
+};
+// If FarmerAssistance type is needed, define it here or import from the correct location
+// Example definition (customize as needed):
+export type FarmerAssistance = {
+  alertType: string;
+  title: string;
+  message: string;
+  recommendations: string[];
+  timeframe: string;
+  severity: string;
+};
 import { subDays, format, addDays } from 'date-fns';
 
 // Crop information
@@ -42,31 +89,31 @@ const seededRandom = (seed: number) => {
 };
 
 // Generate mock historical data
-const generatePriceData = (
-  basePrice: number,
-  days: number,
-  volatility: number = 0.1,
-  seed: number = 12345,
-): PriceData[] => {
-  const data: PriceData[] = [];
-  let currentPrice = basePrice;
+// const generatePriceData = (
+//   basePrice: number,
+//   days: number,
+//   volatility: number = 0.1,
+//   seed: number = 12345,
+// ): PriceData[] => {
+//   const data: PriceData[] = [];
+//   let currentPrice = basePrice;
 
-  for (let i = days; i >= 0; i--) {
-    //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
-    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
-    const change =
-      (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
-    currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
+//   for (let i = days; i >= 0; i--) {
+//     //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
+//     const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
+//     const change =
+//       (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
+//     currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
 
-    data.push({
-      date,
-      price: Number(currentPrice.toFixed(2)),
-      volume: Math.floor(seededRandom(seed + i + 1000) * 1000) + 500,
-    });
-  }
+//     data.push({
+//       date,
+//       price: Number(currentPrice.toFixed(2)),
+//       volume: Math.floor(seededRandom(seed + i + 1000) * 1000) + 500,
+//     });
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
 import { realPriceData } from './realPriceData';
 
@@ -101,7 +148,7 @@ const generatePredictionData = (
 
   // Get the specified number of days of historical data
   const recentHistorical = historical.slice(-daysHistorical);
-  const basePrice = recentHistorical[recentHistorical.length - 1].price;
+  // const basePrice = recentHistorical[recentHistorical.length - 1].price;
 
   // Calculate average cost based on historical prices (70% of average historical price)
   const averageCost = (recentHistorical.reduce((sum, item) => sum + item.price, 0) / recentHistorical.length) * 0.7;

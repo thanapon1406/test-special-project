@@ -1,12 +1,19 @@
 'use client';
 
-import { FarmerAssistance } from '@/types';
+type FarmerAssistance = {
+  alertType: 'warning' | 'success' | 'info';
+  title: string;
+  message: string;
+  severity: string;
+  timeframe: string;
+  recommendations: string[];
+};
 import { AlertTriangle, Info, CheckCircle, Clock, TrendingDown, Users } from 'lucide-react';
 
-interface FarmerAlertsProps {
+type FarmerAlertsProps = {
   assistance: FarmerAssistance[];
   cropName: string;
-}
+};
 
 export default function FarmerAlerts({ assistance, cropName }: FarmerAlertsProps) {
   if (!assistance.length) {

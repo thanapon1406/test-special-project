@@ -1,6 +1,23 @@
 'use client';
 
-import { MarketStats } from '@/types';
+// If '@/types' does not export 'MarketStats', you need to define it here or import the correct type.
+// Here is a possible definition based on usage in your component:
+
+export interface MarketStats {
+  currentPrice: number;
+  change24h: number;
+  change7d: number;
+  change30d: number;
+  volume: number;
+  marketCap: number;
+  aiAccuracy?: number;
+  currentSupply?: number;
+  supplyStatus?: 'high' | 'low' | 'normal';
+  priceOutlook?: 'bullish' | 'bearish' | 'neutral';
+}
+
+// If you have the type in '@/types', use this instead:
+// import { MarketStats } from '@/types';
 import { formatCurrency, formatNumber, formatPercentage, getChangeBgColor } from '@/lib/utils';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Brain } from 'lucide-react';
 import FruitIcon from '@/components/FruitIcon';
