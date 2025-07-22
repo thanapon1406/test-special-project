@@ -42,31 +42,31 @@ const seededRandom = (seed: number) => {
 };
 
 // Generate mock historical data
-const generatePriceData = (
-  basePrice: number,
-  days: number,
-  volatility: number = 0.1,
-  seed: number = 12345,
-): PriceData[] => {
-  const data: PriceData[] = [];
-  let currentPrice = basePrice;
+// const generatePriceData = (
+//   basePrice: number,
+//   days: number,
+//   volatility: number = 0.1,
+//   seed: number = 12345,
+// ): PriceData[] => {
+//   const data: PriceData[] = [];
+//   let currentPrice = basePrice;
 
-  for (let i = days; i >= 0; i--) {
-    //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
-    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
-    const change =
-      (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
-    currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
+//   for (let i = days; i >= 0; i--) {
+//     //ออมสินเปลี่ยน เป็นค่าของวันปัจจุบัน
+//     const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
+//     const change =
+//       (seededRandom(seed + i) - 0.5) * 2 * volatility * currentPrice;
+//     currentPrice = Math.max(currentPrice + change, basePrice * 0.5);
 
-    data.push({
-      date,
-      price: Number(currentPrice.toFixed(2)),
-      volume: Math.floor(seededRandom(seed + i + 1000) * 1000) + 500,
-    });
-  }
+//     data.push({
+//       date,
+//       price: Number(currentPrice.toFixed(2)),
+//       volume: Math.floor(seededRandom(seed + i + 1000) * 1000) + 500,
+//     });
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
 import { realPriceData } from './realPriceData';
 
@@ -101,7 +101,7 @@ const generatePredictionData = (
 
   // Get the specified number of days of historical data
   const recentHistorical = historical.slice(-daysHistorical);
-  const basePrice = recentHistorical[recentHistorical.length - 1].price;
+  // const basePrice = recentHistorical[recentHistorical.length - 1].price;
 
   // Calculate average cost based on historical prices (70% of average historical price)
   const averageCost = (recentHistorical.reduce((sum, item) => sum + item.price, 0) / recentHistorical.length) * 0.7;
