@@ -108,7 +108,7 @@ export default function Dashboard() {
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Farm Link</h1>
+                <h1 className="text-2xl font-bold text-gray-900">FarmLink</h1>
                 <p className="text-sm text-gray-600">
                   {t(
                     'AI-powered platform that helps farmers sell their products by predicting market prices',
