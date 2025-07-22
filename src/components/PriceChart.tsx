@@ -12,7 +12,28 @@ import {
   Bar,
   ReferenceArea,
 } from 'recharts';
-import { PriceData, PredictionData } from '@/types';
+// Define PredictionData type here if not exported from '@/types'
+export interface PredictionData {
+  date: string;
+  predicted: number;
+  confidence?: number;
+  estimatedSupply?: number;
+  supplyImpact?: number;
+  volume?: number;
+  average?: number;
+  current?: number;
+}
+
+export interface PriceData {
+  date: string;
+  current?: number;
+  predicted?: number;
+  average?: number;
+  volume?: number;
+  confidence?: number;
+  estimatedSupply?: number;
+  supplyImpact?: number;
+}
 import { formatCurrency } from '@/lib/utils';
 import { format, isAfter, isBefore, parseISO } from 'date-fns';
 

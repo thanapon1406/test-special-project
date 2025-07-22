@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CropType, TimeRange } from '@/types';
+// Import TimeRange type from TimeRangeSelector component
+import TimeRangeSelector, { TimeRange } from '@/components/TimeRangeSelector';
+// If CropType is missing, define it here or import the correct type
+type CropType = 'mangosteen' | 'durian' | 'longan';
 import { crops, marketStats, getPredictionDataByTimeRange } from '@/data/mockData';
 import PriceChart from '@/components/PriceChart';
-import MarketStatsCard from '@/components/MarketStatsCard';
-import TimeRangeSelector from '@/components/TimeRangeSelector';
+import MarketStatsCard, { MarketStats } from '@/components/MarketStatsCard';
 // import FarmerAlerts from '@/components/FarmerAlerts';
 import FruitIcon from '@/components/FruitIcon';
 import { TrendingUp, Calendar } from 'lucide-react';
@@ -63,8 +65,20 @@ export default function Dashboard() {
 
   const cropData = crops[selectedCrop];
   // Always show merged historical + prediction data
-  const chartData = getPredictionDataByTimeRange(selectedCrop, timeRange);
-  const stats = marketStats[selectedCrop];
+  const chartData = getPredictionDataByTimeRange(selectedCrop, timeRange).map(item => ({
+    ...item,
+    current: item.current ?? undefined,
+    historical: item.historical ?? undefined,
+    predicted: item.predicted ?? undefined
+  }));
+  const rawStats = marketStats[selectedCrop];
+  
+  // Ensure supplyStatus and priceOutlook match the expected types
+  const stats: MarketStats = {
+    ...rawStats,
+    supplyStatus: rawStats.supplyStatus as "high" | "normal" | "low" | undefined,
+    priceOutlook: rawStats.priceOutlook as "bullish" | "bearish" | "neutral" | undefined
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">

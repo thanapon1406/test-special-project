@@ -1,10 +1,57 @@
-import {
-  CropInfo,
-  PriceData,
-  PredictionData,
-  MarketStats,
-  FarmerAssistance,
-} from '@/types';
+// Define CropInfo type locally (customize fields as needed)
+export type CropInfo = {
+  id: string;
+  name: string;
+  icon: string;
+  unit: string;
+  color: string;
+  description: string;
+};
+
+// Define PriceData type here if not exported from '@/types'
+export type PriceData = {
+  date: string;
+  price: number;
+  volume?: number;
+};
+
+// Define MarketStats type here if not exported from '@/types'
+export type MarketStats = {
+  currentPrice: number;
+  change24h: number;
+  change7d: number;
+  change30d: number;
+  volume: number;
+  marketCap: number;
+  aiAccuracy: number;
+  currentSupply: number;
+  supplyStatus: string;
+  priceOutlook: string;
+};
+
+// Define PredictionData type here if not exported from '@/types'
+export type PredictionData = {
+  date: string;
+  historical: number | null;
+  current: number | null;
+  predicted: number | null;
+  confidence: number;
+  estimatedSupply?: number;
+  supplyImpact?: number;
+  demandTrend?: number;
+  average?: number;
+  volume?: number;
+};
+// If FarmerAssistance type is needed, define it here or import from the correct location
+// Example definition (customize as needed):
+export type FarmerAssistance = {
+  alertType: string;
+  title: string;
+  message: string;
+  recommendations: string[];
+  timeframe: string;
+  severity: string;
+};
 import { subDays, format, addDays } from 'date-fns';
 
 // Crop information
