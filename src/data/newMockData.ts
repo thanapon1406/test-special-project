@@ -3,9 +3,8 @@ import {
   PriceData,
   PredictionData,
   MarketStats,
-  FarmerAssistance,
 } from '@/types';
-import { subDays, format, addDays } from 'date-fns';
+import { subDays, format } from 'date-fns';
 import { realPriceData } from './realPriceData';
 
 // Seeded random number generator for consistent data
