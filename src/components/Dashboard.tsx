@@ -111,8 +111,8 @@ export default function Dashboard() {
                 <h1 className="text-2xl font-bold text-gray-900">FarmLink</h1>
                 <p className="text-sm text-gray-600">
                   {t(
-                    'AI-powered platform that helps farmers sell their products by predicting market prices',
-                    'แพลตฟอร์ม AI ที่ช่วยเกษตรกรขายผลผลิตโดยการทำนายราคาตลาด',
+                    'Connecting agriculture with markets sustainably',
+                    'เชื่อมโยงเกษตรกับตลาดอย่างยั่งยืน',
                   )}
                 </p>
               </div>
@@ -120,28 +120,26 @@ export default function Dashboard() {
 
             <div className="flex items-center space-x-4">
               <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                {t('Current Market Data', 'ข้อมูลตลาดปัจจุบัน')} – {date}
+                {date}
               </div>
 
               {/* Language Toggle Button */}
               <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setLanguage('en')}
-                  className={`px-3 py-1 text-sm font-medium transition-colors ${
-                    language === 'en'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:text-blue-500'
-                  }`}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'en'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:text-blue-500'
+                    }`}
                 >
-                  ENG
+                  EN
                 </button>
                 <button
                   onClick={() => setLanguage('th')}
-                  className={`px-3 py-1 text-sm font-medium transition-colors ${
-                    language === 'th'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:text-blue-500'
-                  }`}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'th'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:text-blue-500'
+                    }`}
                 >
                   TH
                 </button>
@@ -163,11 +161,10 @@ export default function Dashboard() {
               <button
                 key={key}
                 onClick={() => setSelectedCrop(key as CropType)}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                  selectedCrop === key
-                    ? 'border-green-500 bg-green-50 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                }`}
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${selectedCrop === key
+                  ? 'border-green-500 bg-green-50 shadow-md'
+                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                  }`}
               >
                 <div className="flex items-center space-x-3">
                   <FruitIcon iconName={crop.icon} size={32} />

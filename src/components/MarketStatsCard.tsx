@@ -170,12 +170,7 @@ export default function MarketStatsCard({ stats, cropName, cropIcon, language = 
                   {stats.priceOutlook?.toUpperCase()}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">{t('AI Impact', 'ผลกระทบ AI')}</span>
-                <span className="text-sm font-medium text-gray-900">
-                  {t('Supply-driven', 'ขับเคลื่อนโดยอุปทาน')}
-                </span>
-              </div>
+
             </div>
           </div>
         </div>
