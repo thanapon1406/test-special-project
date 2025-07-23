@@ -561,6 +561,35 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                     </div>
                 </div>
 
+
+
+                {/* Sales Locations */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        {t('Sales Locations', 'สถานที่จัดจำหน่าย')}
+                    </h3>
+                    <div className="space-y-4">
+                        {getSalesLocations(cropData.name).map((location: SalesLocation, index: number) => (
+                            <div key={index} className="p-4 bg-purple-50 rounded-lg">
+                                <h4 className="font-medium text-purple-900 mb-2">
+                                    {location.name}
+                                </h4>
+                                <div className="space-y-1">
+                                    <p className="text-sm text-purple-700">
+                                        📍 {t('Location', 'ที่ตั้ง')}: {location.location}
+                                    </p>
+                                    <p className="text-sm text-purple-700">
+                                        🏪 {t('Type', 'ประเภท')}: {location.type}
+                                    </p>
+                                    <p className="text-sm text-purple-700">
+                                        🎯 {t('Specialty', 'ความเชี่ยวชาญ')}: {location.specialty}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Farm Directory */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -579,32 +608,8 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                                     <p className="text-sm text-yellow-700">
                                         🌟 {t('Specialty', 'ความเชี่ยวชาญ')}: {farm.specialty}
                                     </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Sales Locations */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {t('Sales Locations', 'ร้านค้าปลีก')}
-                    </h3>
-                    <div className="space-y-4">
-                        {getSalesLocations(cropData.name).map((location: SalesLocation, index: number) => (
-                            <div key={index} className="p-4 bg-purple-50 rounded-lg">
-                                <h4 className="font-medium text-purple-900 mb-2">
-                                    {location.name}
-                                </h4>
-                                <div className="space-y-1">
-                                    <p className="text-sm text-purple-700">
-                                        📍 {t('Location', 'ที่ตั้ง')}: {location.location}
-                                    </p>
-                                    <p className="text-sm text-purple-700">
-                                        🏪 {t('Type', 'ประเภท')}: {location.type}
-                                    </p>
-                                    <p className="text-sm text-purple-700">
-                                        🎯 {t('Specialty', 'ความเชี่ยวชาญ')}: {location.specialty}
+                                    <p className="text-sm text-yellow-700">
+                                        📞 {t('Contact', 'ติดต่อ')}: {'082-345-6789'}
                                     </p>
                                 </div>
                             </div>

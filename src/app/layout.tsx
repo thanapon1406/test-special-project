@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Farm Link - AI-powered platform that helps farmers sell their products by predicting market prices",
+  title: "Farm Link - Connecting agriculture with markets sustainably",
   description: "Modern platform helping farmers predict crop prices for Mangosteen, Durian, and Longan with AI-powered market insights and trends analysis.",
 };
 

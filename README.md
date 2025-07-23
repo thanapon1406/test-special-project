@@ -1,4 +1,4 @@
-# Farm Link - AI-powered platform that helps farmers sell their products by predicting market prices
+# Farm Link - Connecting agriculture with markets sustainably
 
 A modern Next.js application designed to help farmers make informed decisions about crop pricing for mangosteen, durian, and longan. The platform features interactive price charts, AI-powered predictions with supply-demand analysis, and comprehensive farmer assistance for challenging market conditions.
 
