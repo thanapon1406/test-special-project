@@ -16,6 +16,7 @@ import MarketStatsCard, { MarketStats } from '@/components/MarketStatsCard';
 import FruitIcon from '@/components/FruitIcon';
 import { TrendingUp, Calendar } from 'lucide-react';
 import Footer from './Footer';
+import { demoDataChart } from '@/data/demoData';
 
 export default function Dashboard() {
   const [selectedCrop, setSelectedCrop] = useState<CropType>('mangosteen');
@@ -71,15 +72,10 @@ export default function Dashboard() {
   }
 
   const cropData = crops[selectedCrop];
+
   // Always show merged historical + prediction data
-  const chartData = getPredictionDataByTimeRange(selectedCrop, timeRange).map(
-    (item) => ({
-      ...item,
-      current: item.current ?? undefined,
-      historical: item.historical ?? undefined,
-      predicted: item.predicted ?? undefined,
-    }),
-  );
+  const chartData = demoDataChart(cropData.name, timeRange);
+
   const rawStats = marketStats[selectedCrop];
 
   // Ensure supplyStatus and priceOutlook match the expected types
@@ -218,7 +214,7 @@ export default function Dashboard() {
           </div>
 
           <PriceChart
-            data={chartData}
+            data={chartData || []}
             color={cropData.color}
             height={400}
             selectedCrop={cropData.name}

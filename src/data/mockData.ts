@@ -116,6 +116,7 @@ const seededRandom = (seed: number) => {
 // };
 
 import { realPriceData } from './realPriceData';
+import { demoDataChart } from './demoData';
 
 // Historical price data from real data
 export const historicalData: Record<string, PriceData[]> = {

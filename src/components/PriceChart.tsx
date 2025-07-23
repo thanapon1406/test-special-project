@@ -34,6 +34,7 @@ export interface PriceData {
   estimatedSupply?: number;
   supplyImpact?: number;
 }
+
 import { formatCurrency } from '@/lib/utils';
 import { format, isAfter, isBefore, parseISO } from 'date-fns';
 
@@ -118,18 +119,110 @@ export default function PriceChart({
   const highlightRange = [
     {
       key: 'Mangosteen',
-      from: '2025-05-01', // พฤษภาคม - สิงหาคม (ฤดูกาลมังคุดภาคตะวันออก)
+      from: '2022-05-31',
+      to: '2022-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2023-05-31',
+      to: '2023-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2024-05-31',
+      to: '2024-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2025-05-31',
+      to: '2025-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2026-05-31',
+      to: '2026-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2027-05-31',
+      to: '2027-08-31',
+    },
+    {
+      key: 'Mangosteen',
+      from: '2028-05-31',
+      to: '2028-08-31',
+    },
+
+    {
+      key: 'Durian',
+      from: '2022-04-30',
+      to: '2022-08-31',
+    },
+    {
+      key: 'Durian',
+      from: '2023-04-30',
+      to: '2023-08-31',
+    },
+    {
+      key: 'Durian',
+      from: '2024-04-30',
+      to: '2024-08-31',
+    },
+    {
+      key: 'Durian',
+      from: '2025-04-30',
       to: '2025-08-31',
     },
     {
       key: 'Durian',
-      from: '2025-04-01', // เมษายน - กรกฎาคม (ฤดูกาลทุเรียนภาคตะวันออก)
-      to: '2025-07-31',
+      from: '2026-04-30',
+      to: '2026-08-31',
+    },
+    {
+      key: 'Durian',
+      from: '2027-04-30',
+      to: '2027-08-31',
+    },
+    {
+      key: 'Durian',
+      from: '2028-04-30',
+      to: '2028-08-31',
+    },
+
+    {
+      key: 'Longan',
+      from: '2022-07-31',
+      to: '2022-09-30',
     },
     {
       key: 'Longan',
-      from: '2025-07-01', // กรกฎาคม - กันยายน (ฤดูกาลลำไยภาคเหนือ)
+      from: '2023-07-31',
+      to: '2023-09-30',
+    },
+    {
+      key: 'Longan',
+      from: '2024-07-31',
+      to: '2024-09-30',
+    },
+    {
+      key: 'Longan',
+      from: '2025-07-31',
       to: '2025-09-30',
+    },
+    {
+      key: 'Longan',
+      from: '2026-07-31',
+      to: '2026-09-30',
+    },
+    {
+      key: 'Longan',
+      from: '2027-07-31',
+      to: '2027-09-30',
+    },
+    {
+      key: 'Longan',
+      from: '2028-07-310',
+      to: '2028-09-30',
     },
   ];
 
@@ -137,10 +230,12 @@ export default function PriceChart({
   const chartStart = parseISO(data[0].date);
   const chartEnd = parseISO(data[data.length - 1].date);
 
-  const cropRange = highlightRange.find((range) => range.key === selectedCrop);
+  const cropRange = highlightRange.filter(
+    (range) => range.key === selectedCrop,
+  );
 
-  const highlightStart = cropRange ? parseISO(cropRange.from) : null;
-  const highlightEnd = cropRange ? parseISO(cropRange.to) : null;
+  const highlightStart = cropRange.map((range) => parseISO(range.from));
+  const highlightEnd = cropRange.map((range) => parseISO(range.to));
 
   const formatXAxisLabel = (dateStr: string) => {
     try {
@@ -191,21 +286,21 @@ export default function PriceChart({
           <Legend />
 
           {cropRange &&
-            highlightStart &&
-            highlightEnd &&
-            (() => {
+            highlightStart.length > 0 &&
+            highlightEnd.length > 0 &&
+            highlightStart.map((start, index) => {
+              const end = highlightEnd[index];
+
               const isOverlap =
-                isBefore(highlightStart, chartEnd) &&
-                isAfter(highlightEnd, chartStart);
+                isBefore(start, chartEnd) && isAfter(end, chartStart);
 
-              // ปรับ refArea ให้ "ตัดทอน" ตามกราฟ
-              const refAreaX1 = isBefore(highlightStart, chartStart)
+              const refAreaX1 = isBefore(start, chartStart)
                 ? data[0].date // ถ้าเริ่มก่อนกราฟ ให้ใช้จุดแรกของกราฟ
-                : cropRange.from;
+                : cropRange[index].from;
 
-              const refAreaX2 = isAfter(highlightEnd, chartEnd)
+              const refAreaX2 = isAfter(end, chartEnd)
                 ? data[data.length - 1].date // ถ้าสิ้นสุดหลังกราฟ ให้ใช้จุดสุดท้ายของกราฟ
-                : cropRange.to;
+                : cropRange[index].to;
 
               const cropColorMap: Record<string, string> = {
                 Mangosteen: '#ba68c8',
@@ -215,6 +310,7 @@ export default function PriceChart({
 
               return isOverlap ? (
                 <ReferenceArea
+                  key={`${selectedCrop}-${index}`} // ให้เป็น unique key สำหรับแต่ละช่วงเวลา
                   x1={refAreaX1}
                   x2={refAreaX2}
                   yAxisId="left"
@@ -222,7 +318,7 @@ export default function PriceChart({
                   fillOpacity={0.2}
                 />
               ) : null;
-            })()}
+            })}
 
           <Bar
             dataKey="volume"
