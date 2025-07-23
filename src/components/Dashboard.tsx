@@ -8,7 +8,7 @@ type CropType = 'mangosteen' | 'durian' | 'longan';
 import {
   crops,
   marketStats,
-  getPredictionDataByTimeRange,
+  // getPredictionDataByTimeRange,
 } from '@/data/mockData';
 import PriceChart from '@/components/PriceChart';
 import MarketStatsCard, { MarketStats } from '@/components/MarketStatsCard';
@@ -123,19 +123,21 @@ export default function Dashboard() {
               <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setLanguage('en')}
-                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'en'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-600 hover:text-blue-500'
-                    }`}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${
+                    language === 'en'
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-600 hover:text-blue-500'
+                  }`}
                 >
                   EN
                 </button>
                 <button
                   onClick={() => setLanguage('th')}
-                  className={`px-3 py-1 text-sm font-medium transition-colors ${language === 'th'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-600 hover:text-blue-500'
-                    }`}
+                  className={`px-3 py-1 text-sm font-medium transition-colors ${
+                    language === 'th'
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-600 hover:text-blue-500'
+                  }`}
                 >
                   TH
                 </button>
@@ -157,10 +159,11 @@ export default function Dashboard() {
               <button
                 key={key}
                 onClick={() => setSelectedCrop(key as CropType)}
-                className={`p-4 rounded-xl border-2 transition-all duration-200 ${selectedCrop === key
-                  ? 'border-green-500 bg-green-50 shadow-md'
-                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                  selectedCrop === key
+                    ? 'border-green-500 bg-green-50 shadow-md'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                }`}
               >
                 <div className="flex items-center space-x-3">
                   <FruitIcon iconName={crop.icon} size={32} />
