@@ -566,7 +566,7 @@ export default function Footer({ cropData, language = 'en' }: FooterProps) {
                 {/* Sales Locations */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {t('Sales Locations', 'ร้านค้าปลีก')}
+                        {t('Sales Locations', 'สถานที่จัดจำหน่าย')}
                     </h3>
                     <div className="space-y-4">
                         {getSalesLocations(cropData.name).map((location: SalesLocation, index: number) => (
